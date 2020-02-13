@@ -1,0 +1,8 @@
+<RCC>
+  <qresource prefix="新前缀">
+    <file>登出h.png</file>
+    <file>登录h.png</file>
+    <file>设置h.png</file>
+    <file>退出h.png</file>
+  </qresource>
+</RCC>
