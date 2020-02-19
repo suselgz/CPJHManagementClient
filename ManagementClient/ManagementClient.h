@@ -4,8 +4,8 @@
 #include "ui_ManagementClient.h"
 #include "ClientInfo.h"
 #include "DAL.h"
-
-
+#include "zxqsSkinTheme.h"
+#include "BagModify.h"
 
 class ManagementClient : public QMainWindow
 {
@@ -21,7 +21,8 @@ private:
 	ClientInfo * m_pClientInfo[CLIENT_NUM_INFO];
 	int m_nSelClientNo;
 	DAL m_dal;
-	
+	zxqsSkinTheme* m_skin;
+	BagModify* m_bagModify;
 	QVector<DIC_MACHINE> m_vecDicMachine;
 	void InitStatusBar(void);
 	void InitClientInfo(void);

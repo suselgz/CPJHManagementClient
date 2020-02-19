@@ -17,7 +17,7 @@ ManagementClient::ManagementClient(QWidget *parent)
 
 ManagementClient::~ManagementClient()
 {
-
+	delete m_skin;
 }
 
 void ManagementClient::on_pushButton_Exit_clicked(void)
@@ -27,6 +27,9 @@ void ManagementClient::on_pushButton_Exit_clicked(void)
 
 void ManagementClient::ClientInfoChecked(int nClientNo)
 {
+	BagModify* bagModify = new BagModify();
+	bagModify->setWindowModality(Qt::ApplicationModal);
+	bagModify->show();
 /*	CLIENT_INFO clientInfo;
 	m_nSelClientNo = nClientNo;
 
@@ -62,7 +65,6 @@ void ManagementClient::InitClientInfo(void)
 	m_pClientInfo[0] = ui.frame_clintInfo00;
 	m_pClientInfo[1] = ui.frame_clintInfo01;
 	m_pClientInfo[2] = ui.frame_clintInfo02;
-//	m_pClientInfo[3] = ui.frame_clintInfo03;
 	m_vecDicMachine.clear();
 	GlobalParam::dal.m_DataBaseOperator.GetDicMachineList(m_vecDicMachine);
 	for (int i = 0; i < m_vecDicMachine.size(); i++)
@@ -80,10 +82,8 @@ void ManagementClient::InitClientInfo(void)
 
 void ManagementClient::InitQssInfo(void)
 {
-	QFile qss("..\\Resources\\style.qss");
-	qss.open(QFile::ReadOnly);
-	qApp->setStyleSheet(qss.readAll());
-	qss.close();
+	m_skin = zxqsSkinThemeInstance();
+	m_skin->load();
 }
 
 void ManagementClient::SetClientInfoEnabled(bool bEnabled /*= false*/)

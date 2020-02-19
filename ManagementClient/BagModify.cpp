@@ -6,6 +6,7 @@ BagModify::BagModify(QWidget *parent)
 {
 	ui.setupUi(this);
 	InitDispScene();
+	this->setWindowFlags(Qt::Widget | Qt::WindowStaysOnTopHint);
 }
 
 BagModify::~BagModify()
