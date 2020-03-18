@@ -19,6 +19,8 @@ private:
 	Ui::BagModify ui;
 	QDispScene *m_scene;
 	void InitDispScene();
+signals:
+	void sendUpdataToMain(int nClientNo);
 };
 
 #endif // BAGMODIFY_H

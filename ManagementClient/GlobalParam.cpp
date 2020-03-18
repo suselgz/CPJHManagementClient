@@ -4,6 +4,7 @@ DAL GlobalParam::dal;
 DB_SETTING GlobalParam::dbSetting;
 CLIENT_INFO GlobalParam::clintInfo[CLIENT_NUM_INFO];
 QString GlobalParam::orgPath;
+vector<NET_MSG_MODIFY_INFO*> GlobalParam::netMsg[CLIENT_NUM_INFO];
 GlobalParam::GlobalParam(QObject *parent)
 	: QObject(parent)
 {

@@ -5,36 +5,75 @@ ClientDetial::ClientDetial(QWidget *parent)
 	: QFrame(parent)
 {
 	ui.setupUi(this);
+	ui.label_machine1Status->setStyleSheet("background-color: rgb(200, 0, 0); border-radius: 15px;");
+	ui.label_machine2Status->setStyleSheet("background-color: rgb(200, 0, 0); border-radius: 15px;");
+	ui.label_machine3Status->setStyleSheet("background-color: rgb(200, 0, 0); border-radius: 15px;");
+	
 }
 
 ClientDetial::~ClientDetial()
 {
+	
 }
 
-void ClientDetial::SetMachineName(QString machineName)
+void ClientDetial::SetNetConnectStatus(NET_CONNECT_STATUS net_status)
 {
-	ui.label_machineName->setText(machineName);
+	if (net_status.m_pNetMachine1)
+	{
+		ui.label_machine1Status->setStyleSheet("background-color: rgb(0, 200, 0); border-radius: 15px;");
+	}
+	else
+	{
+		ui.label_machine1Status->setStyleSheet("background-color: rgb(200, 0, 0); border-radius: 15px;");
+	}
+	if (net_status.m_pNetMachine2)
+	{
+		ui.label_machine2Status->setStyleSheet("background-color: rgb(0, 200, 0); border-radius: 15px;");
+	}
+	else
+	{
+		ui.label_machine2Status->setStyleSheet("background-color: rgb(200, 0, 0); border-radius: 15px;");
+	}
+	if (net_status.m_pNetMachine3)
+	{
+		ui.label_machine3Status->setStyleSheet("background-color: rgb(0, 200, 0); border-radius: 15px;");
+	}
+	else
+	{
+		ui.label_machine3Status->setStyleSheet("background-color: rgb(200, 0, 0); border-radius: 15px;");
+	}
 }
 
-void ClientDetial::SetOperatorName(QString operatorName)
+void ClientDetial::SetpatchCode(QString patchCode)
 {
-	ui.label_operatorName->setText(operatorName);
+	ui.label_patchCode->setText(patchCode);
 }
 
-void ClientDetial::SetManagerName(QString managerName)
+void ClientDetial::SetproductType(QString productType)
 {
-	ui.label_managerName->setText(managerName);
+	ui.label_productType->setText(productType);
 }
 
-void ClientDetial::SetTotalRecive(int nTotalRecive)
+void ClientDetial::SetpreSetNum(QString preSetNum)
 {
-	ui.label_totalRecive->setText(QString::number(nTotalRecive));
+	ui.label_preSetNum->setText(preSetNum);
 }
 
-void ClientDetial::SetTotalRetrieve(int nTotalRetrieve)
+void ClientDetial::SetdestroyNum(int destroyNum)
 {
-	ui.label_totalRetrieve->setText(QString::number(nTotalRetrieve));
+	ui.label_destroyNum->setText(QString::number(destroyNum));
 }
+
+void ClientDetial::SetdestroyBox(int destroyBox)
+{
+	ui.label_destroyBox->setText(QString::number(destroyBox));
+}
+
+void ClientDetial::SetdestroyBag(int destroyBag)
+{
+	ui.label_destroyBag->setText(QString::number(destroyBag));
+}
+
 void ClientDetial::SetTableReciveDetial(QString operatorName)
 {
 /*	QSqlQueryModel *Model;

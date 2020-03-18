@@ -2,6 +2,7 @@
 
 #include <QFrame>
 #include "ui_ClientDetial.h"
+
 class ClientDetial : public QFrame
 {
 	Q_OBJECT
@@ -9,13 +10,17 @@ class ClientDetial : public QFrame
 public:
 	ClientDetial(QWidget *parent = Q_NULLPTR);
 	~ClientDetial();
-	void SetMachineName(QString machineName);
-	void SetOperatorName(QString operatorName);
-	void SetManagerName(QString managerName);
-	void SetTotalRecive(int nTotalRecive);
-	void SetTotalRetrieve(int nTotalRetrieve);
+	void SetNetConnectStatus(NET_CONNECT_STATUS net_status);
+	void SetpatchCode(QString patchCode);
+	void SetproductType(QString productType);
+	void SetpreSetNum(QString preSetNum);
+	void SetdestroyNum(int destroyNum);
+	void SetdestroyBox(int destroyBox);
+	void SetdestroyBag(int destroyBag);
 	void SetTableReciveDetial(QString operatorName);
+
 private:
 	Ui::ClientDetial ui;
+	
 	
 };

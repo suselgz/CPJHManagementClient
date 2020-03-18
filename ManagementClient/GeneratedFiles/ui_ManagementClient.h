@@ -78,6 +78,7 @@ public:
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
         label_appTitle = new QLabel(centralWidget);
         label_appTitle->setObjectName(QStringLiteral("label_appTitle"));
+        label_appTitle->setMinimumSize(QSize(0, 0));
         label_appTitle->setStyleSheet(QStringLiteral(""));
 
         horizontalLayout_2->addWidget(label_appTitle);

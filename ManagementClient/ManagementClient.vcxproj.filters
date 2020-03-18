@@ -130,6 +130,15 @@
     <ClCompile Include="BagModify.cpp">
       <Filter>Source Files\UIL</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_QOnlineNetMsg.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_QOnlineNetMsg.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="QOnlineNetMsg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -196,6 +205,9 @@
     </CustomBuild>
     <CustomBuild Include="BagModify.h">
       <Filter>Header Files\UIL</Filter>
+    </CustomBuild>
+    <CustomBuild Include="QOnlineNetMsg.h">
+      <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

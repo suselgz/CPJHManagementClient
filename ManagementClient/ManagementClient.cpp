@@ -10,6 +10,12 @@ ManagementClient::ManagementClient(QWidget *parent)
 	InitQssInfo();
 	SetClientInfoEnabled(true);
 	m_nSelClientNo = 0;
+	m_OnlineNetMsg = new QOnlineNetMsg();
+	m_OnlineNetMsg->InitSNetwork();
+	connect(m_OnlineNetMsg, &QOnlineNetMsg::SendNetConnected, this, &ManagementClient::RevNetConnectStatus);
+	connect(m_OnlineNetMsg, &QOnlineNetMsg::SendRevNumToPm, this, &ManagementClient::SetClientInfo);
+	
+	m_ClientDetial = ui.frame_clientDetial;
 	showMaximized();
 	this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
 	this->setWindowState(Qt::WindowFullScreen);
@@ -18,6 +24,7 @@ ManagementClient::ManagementClient(QWidget *parent)
 ManagementClient::~ManagementClient()
 {
 	delete m_skin;
+	delete m_OnlineNetMsg;
 }
 
 void ManagementClient::on_pushButton_Exit_clicked(void)
@@ -29,21 +36,35 @@ void ManagementClient::ClientInfoChecked(int nClientNo)
 {
 	BagModify* bagModify = new BagModify();
 	bagModify->setWindowModality(Qt::ApplicationModal);
+	connect(bagModify, SIGNAL(sendUpdataToMain(int)), this, SLOT(RevModifyWidgetInfo(int)));
 	bagModify->show();
-/*	CLIENT_INFO clientInfo;
-	m_nSelClientNo = nClientNo;
-
-//	GlobalParam::clintInfo = clientInfo;
-	ui.frame_clientDetial->SetMachineName(clientInfo.machineName);
-	ui.frame_clientDetial->SetOperatorName(clientInfo.operatorName);
-	ui.frame_clientDetial->SetManagerName(clientInfo.managerName);
-	ui.frame_clientDetial->SetTotalRecive(clientInfo.nTotalRecive);
-	ui.frame_clientDetial->SetTotalRetrieve(clientInfo.nTotalRetrieve);
-	ui.frame_clientDetial->SetTableReciveDetial(clientInfo.operatorName);
-
-	m_pClientInfo[m_nSelClientNo]->SetClientInfo(clientInfo);*/
 }
 
+void ManagementClient::RevNetConnectStatus(NET_CONNECT_STATUS net_status)
+{
+	m_ClientDetial->SetNetConnectStatus(net_status);
+}
+
+void ManagementClient::RevModifyWidgetInfo(int nClientNo)
+{
+	switch (nClientNo)
+	{
+	case NET_CONNECT_MACHINE_CODE::MACHINE1_CODE:
+		GlobalParam::clintInfo[0].nTotalRetrieve--;
+		SetClientInfo(GlobalParam::clintInfo[0], NET_CONNECT_MACHINE_CODE::MACHINE1_CODE);
+		break;
+	case NET_CONNECT_MACHINE_CODE::MACHINE2_CODE:
+		GlobalParam::clintInfo[1].nTotalRetrieve--;
+		SetClientInfo(GlobalParam::clintInfo[1], NET_CONNECT_MACHINE_CODE::MACHINE2_CODE);
+		break;
+	case NET_CONNECT_MACHINE_CODE::MACHINE3_CODE:
+		GlobalParam::clintInfo[2].nTotalRetrieve--;
+		SetClientInfo(GlobalParam::clintInfo[2], NET_CONNECT_MACHINE_CODE::MACHINE3_CODE);
+		break;
+	default:
+		break;
+	}
+}
 
 void ManagementClient::InitStatusBar(void)
 {
@@ -80,10 +101,33 @@ void ManagementClient::InitClientInfo(void)
 	}
 }
 
+void ManagementClient::SetClientInfo(CLIENT_INFO client_info, int machineCode)
+{
+	switch (machineCode)
+	{
+	case NET_CONNECT_MACHINE_CODE::MACHINE1_CODE:
+		m_pClientInfo[0]->SetClientInfo(client_info);
+		break;
+	case NET_CONNECT_MACHINE_CODE::MACHINE2_CODE:
+		m_pClientInfo[1]->SetClientInfo(client_info);
+		break;
+	case NET_CONNECT_MACHINE_CODE::MACHINE3_CODE:
+		m_pClientInfo[2]->SetClientInfo(client_info);
+		break;
+	default:
+		break;
+	}
+}
+
 void ManagementClient::InitQssInfo(void)
 {
 	m_skin = zxqsSkinThemeInstance();
-	m_skin->load();
+	if (!m_skin->LoadSkin())
+	{
+		std::string err = m_skin->GetLastErr();
+		QString qs = QString::fromLocal8Bit(err.c_str());
+		QMessageBox::information(NULL, "зЂвт", qs);
+	}
 }
 
 void ManagementClient::SetClientInfoEnabled(bool bEnabled /*= false*/)
