@@ -37,23 +37,23 @@ public:
     QGridLayout *gridLayout_2;
     QLabel *label_12;
     QLabel *label_9;
-    QLabel *label_10;
-    QLabel *label_11;
+    QLabel *label_serial;
+    QLabel *label_machineName;
     QGroupBox *groupBox;
     QGridLayout *gridLayout;
     QSpacerItem *verticalSpacer_5;
     QLabel *label;
-    QComboBox *comboBox;
+    QComboBox *comboBox_identfyNum;
     QSpacerItem *verticalSpacer_4;
     QLabel *label_2;
-    QCheckBox *checkBox;
-    QCheckBox *checkBox_2;
+    QCheckBox *checkBox_numErrType;
+    QCheckBox *checkBox_envelope;
     QSpacerItem *verticalSpacer_3;
     QLabel *label_3;
-    QCheckBox *checkBox_3;
+    QCheckBox *checkBox_delete;
     QSpacerItem *verticalSpacer_2;
     QLabel *label_4;
-    QLabel *label_5;
+    QLabel *label_info;
     QSpacerItem *verticalSpacer;
 
     void setupUi(QWidget *BagModify)
@@ -91,15 +91,15 @@ public:
 
         gridLayout_2->addWidget(label_9, 3, 0, 1, 1);
 
-        label_10 = new QLabel(groupBox_2);
-        label_10->setObjectName(QStringLiteral("label_10"));
+        label_serial = new QLabel(groupBox_2);
+        label_serial->setObjectName(QStringLiteral("label_serial"));
 
-        gridLayout_2->addWidget(label_10, 3, 1, 1, 1);
+        gridLayout_2->addWidget(label_serial, 3, 1, 1, 1);
 
-        label_11 = new QLabel(groupBox_2);
-        label_11->setObjectName(QStringLiteral("label_11"));
+        label_machineName = new QLabel(groupBox_2);
+        label_machineName->setObjectName(QStringLiteral("label_machineName"));
 
-        gridLayout_2->addWidget(label_11, 0, 1, 1, 1);
+        gridLayout_2->addWidget(label_machineName, 0, 1, 1, 1);
 
 
         verticalLayout->addWidget(groupBox_2);
@@ -119,10 +119,10 @@ public:
 
         gridLayout->addWidget(label, 1, 0, 1, 1);
 
-        comboBox = new QComboBox(groupBox);
-        comboBox->setObjectName(QStringLiteral("comboBox"));
+        comboBox_identfyNum = new QComboBox(groupBox);
+        comboBox_identfyNum->setObjectName(QStringLiteral("comboBox_identfyNum"));
 
-        gridLayout->addWidget(comboBox, 1, 1, 1, 1);
+        gridLayout->addWidget(comboBox_identfyNum, 1, 1, 1, 1);
 
         verticalSpacer_4 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
@@ -133,15 +133,15 @@ public:
 
         gridLayout->addWidget(label_2, 3, 0, 1, 1);
 
-        checkBox = new QCheckBox(groupBox);
-        checkBox->setObjectName(QStringLiteral("checkBox"));
+        checkBox_numErrType = new QCheckBox(groupBox);
+        checkBox_numErrType->setObjectName(QStringLiteral("checkBox_numErrType"));
 
-        gridLayout->addWidget(checkBox, 3, 1, 1, 1);
+        gridLayout->addWidget(checkBox_numErrType, 3, 1, 1, 1);
 
-        checkBox_2 = new QCheckBox(groupBox);
-        checkBox_2->setObjectName(QStringLiteral("checkBox_2"));
+        checkBox_envelope = new QCheckBox(groupBox);
+        checkBox_envelope->setObjectName(QStringLiteral("checkBox_envelope"));
 
-        gridLayout->addWidget(checkBox_2, 3, 2, 1, 1);
+        gridLayout->addWidget(checkBox_envelope, 3, 2, 1, 1);
 
         verticalSpacer_3 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
@@ -152,10 +152,10 @@ public:
 
         gridLayout->addWidget(label_3, 5, 0, 1, 1);
 
-        checkBox_3 = new QCheckBox(groupBox);
-        checkBox_3->setObjectName(QStringLiteral("checkBox_3"));
+        checkBox_delete = new QCheckBox(groupBox);
+        checkBox_delete->setObjectName(QStringLiteral("checkBox_delete"));
 
-        gridLayout->addWidget(checkBox_3, 5, 1, 1, 1);
+        gridLayout->addWidget(checkBox_delete, 5, 1, 1, 1);
 
         verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
@@ -166,10 +166,10 @@ public:
 
         gridLayout->addWidget(label_4, 7, 0, 1, 1);
 
-        label_5 = new QLabel(groupBox);
-        label_5->setObjectName(QStringLiteral("label_5"));
+        label_info = new QLabel(groupBox);
+        label_info->setObjectName(QStringLiteral("label_info"));
 
-        gridLayout->addWidget(label_5, 7, 1, 1, 1);
+        gridLayout->addWidget(label_info, 7, 1, 1, 1);
 
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
@@ -193,17 +193,17 @@ public:
         groupBox_2->setTitle(QString());
         label_12->setText(QApplication::translate("BagModify", "\346\234\272\345\217\260\344\277\241\346\201\257\357\274\232", 0));
         label_9->setText(QApplication::translate("BagModify", "\351\222\261\346\215\206\345\272\217\345\217\267\357\274\232", 0));
-        label_10->setText(QApplication::translate("BagModify", "\344\277\241\346\201\257", 0));
-        label_11->setText(QApplication::translate("BagModify", "\344\277\241\346\201\257", 0));
+        label_serial->setText(QApplication::translate("BagModify", "\344\277\241\346\201\257", 0));
+        label_machineName->setText(QApplication::translate("BagModify", "\344\277\241\346\201\257", 0));
         groupBox->setTitle(QString());
         label->setText(QApplication::translate("BagModify", "\350\257\206\345\210\253\346\212\212\346\225\260\357\274\232", 0));
         label_2->setText(QApplication::translate("BagModify", "\346\212\245\350\255\246\347\261\273\345\236\213\357\274\232", 0));
-        checkBox->setText(QApplication::translate("BagModify", "\346\212\212\346\225\260\351\224\231\350\257\257", 0));
-        checkBox_2->setText(QApplication::translate("BagModify", "\344\277\241\345\260\201", 0));
+        checkBox_numErrType->setText(QApplication::translate("BagModify", "\346\212\212\346\225\260\351\224\231\350\257\257", 0));
+        checkBox_envelope->setText(QApplication::translate("BagModify", "\344\277\241\345\260\201", 0));
         label_3->setText(QApplication::translate("BagModify", "\346\230\257\345\220\246\345\210\240\345\233\276\357\274\232", 0));
-        checkBox_3->setText(QApplication::translate("BagModify", "\346\230\257", 0));
+        checkBox_delete->setText(QApplication::translate("BagModify", "\346\230\257", 0));
         label_4->setText(QApplication::translate("BagModify", "\346\216\210\346\235\203\344\277\241\346\201\257\357\274\232", 0));
-        label_5->setText(QApplication::translate("BagModify", "\344\277\241\346\201\257", 0));
+        label_info->setText(QApplication::translate("BagModify", "\344\277\241\346\201\257", 0));
     } // retranslateUi
 
 };

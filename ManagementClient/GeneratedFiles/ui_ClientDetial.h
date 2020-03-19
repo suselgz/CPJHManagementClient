@@ -35,7 +35,7 @@ public:
     QLabel *label_title_managerName;
     QLabel *label_patchCode;
     QLabel *label_title_totalRetrieve;
-    QLabel *label_preSetNum;
+    QLabel *label_preSetAmount;
     QLabel *label_title_exceptionCount;
     QLabel *label_machine2Status;
     QLabel *label_title_totalRecive_2;
@@ -53,10 +53,10 @@ public:
     QTabWidget *tabWidget;
     QWidget *tab;
     QVBoxLayout *verticalLayout;
-    QTableView *tableView_reciveDetial;
+    QTableView *tableView_modifyDetial;
     QWidget *tab_3;
     QVBoxLayout *verticalLayout_3;
-    QTableView *tableView_exceptionDetial;
+    QTableView *tableView_logDetial;
 
     void setupUi(QFrame *ClientDetial)
     {
@@ -98,10 +98,10 @@ public:
 
         gridLayout->addWidget(label_title_totalRetrieve, 2, 0, 1, 1);
 
-        label_preSetNum = new QLabel(ClientDetial);
-        label_preSetNum->setObjectName(QStringLiteral("label_preSetNum"));
+        label_preSetAmount = new QLabel(ClientDetial);
+        label_preSetAmount->setObjectName(QStringLiteral("label_preSetAmount"));
 
-        gridLayout->addWidget(label_preSetNum, 1, 7, 1, 1);
+        gridLayout->addWidget(label_preSetAmount, 1, 7, 1, 1);
 
         label_title_exceptionCount = new QLabel(ClientDetial);
         label_title_exceptionCount->setObjectName(QStringLiteral("label_title_exceptionCount"));
@@ -187,10 +187,10 @@ public:
         verticalLayout->setSpacing(6);
         verticalLayout->setContentsMargins(11, 11, 11, 11);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
-        tableView_reciveDetial = new QTableView(tab);
-        tableView_reciveDetial->setObjectName(QStringLiteral("tableView_reciveDetial"));
+        tableView_modifyDetial = new QTableView(tab);
+        tableView_modifyDetial->setObjectName(QStringLiteral("tableView_modifyDetial"));
 
-        verticalLayout->addWidget(tableView_reciveDetial);
+        verticalLayout->addWidget(tableView_modifyDetial);
 
         tabWidget->addTab(tab, QString());
         tab_3 = new QWidget();
@@ -199,10 +199,10 @@ public:
         verticalLayout_3->setSpacing(6);
         verticalLayout_3->setContentsMargins(11, 11, 11, 11);
         verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
-        tableView_exceptionDetial = new QTableView(tab_3);
-        tableView_exceptionDetial->setObjectName(QStringLiteral("tableView_exceptionDetial"));
+        tableView_logDetial = new QTableView(tab_3);
+        tableView_logDetial->setObjectName(QStringLiteral("tableView_logDetial"));
 
-        verticalLayout_3->addWidget(tableView_exceptionDetial);
+        verticalLayout_3->addWidget(tableView_logDetial);
 
         tabWidget->addTab(tab_3, QString());
 
@@ -211,7 +211,7 @@ public:
 
         retranslateUi(ClientDetial);
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(ClientDetial);
@@ -225,7 +225,7 @@ public:
         label_title_managerName->setText(QApplication::translate("ClientDetial", "\345\267\262\351\224\200\347\256\261\346\225\260\357\274\232", 0));
         label_patchCode->setText(QApplication::translate("ClientDetial", "\344\277\241\346\201\257", 0));
         label_title_totalRetrieve->setText(QApplication::translate("ClientDetial", "\345\267\262\351\224\200\346\200\273\346\225\260\357\274\232", 0));
-        label_preSetNum->setText(QApplication::translate("ClientDetial", "\344\277\241\346\201\257", 0));
+        label_preSetAmount->setText(QApplication::translate("ClientDetial", "\344\277\241\346\201\257", 0));
         label_title_exceptionCount->setText(QApplication::translate("ClientDetial", "\345\267\262\351\224\200\346\215\206\346\225\260\357\274\232", 0));
         label_machine2Status->setText(QString());
         label_title_totalRecive_2->setText(QApplication::translate("ClientDetial", "\344\270\211\345\217\267\347\212\266\346\200\201\357\274\232", 0));

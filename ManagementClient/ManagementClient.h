@@ -28,8 +28,7 @@ private:
 	ClientDetial* m_ClientDetial;
 	QVector<DIC_MACHINE> m_vecDicMachine;
 	void InitStatusBar(void);
-	void InitClientInfo(void);
-	
+	void InitClientAndDetialInfo(void);
 	void InitQssInfo(void);
 	void SetClientInfoEnabled(bool bEnabled = false);
 private slots:

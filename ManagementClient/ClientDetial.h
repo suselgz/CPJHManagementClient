@@ -13,7 +13,7 @@ public:
 	void SetNetConnectStatus(NET_CONNECT_STATUS net_status);
 	void SetpatchCode(QString patchCode);
 	void SetproductType(QString productType);
-	void SetpreSetNum(QString preSetNum);
+	void SetpreAmount(QString preAmoun);
 	void SetdestroyNum(int destroyNum);
 	void SetdestroyBox(int destroyBox);
 	void SetdestroyBag(int destroyBag);

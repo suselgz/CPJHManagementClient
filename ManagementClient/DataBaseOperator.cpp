@@ -39,6 +39,57 @@ bool DataBaseOperator::GetDicMachineList(QVector<DIC_MACHINE> &vecDicMachine)
 	return ret;
 }
 
+bool DataBaseOperator::GetRefreshInfo(GET_REFRESH_INFO &refresh_info)
+{
+//	memset(&refresh_info, 0, sizeof(GET_REFRESH_INFO));
+	bool ret = false;
+	QString sql;
+	sql = QString("select a.BATCH_ID,a.BATCH_CODE,b.AMOUNT,c.PRODUCT_ID,c.PRODUCT_AMOUNT,c.PRODUCT_NAME from wip_batchs a,wip_batch_info b,dic_products c\
+                           where a.BATCH_ID=b.BATCH_ID and b.batch_info_id = (select min(a.batch_info_id) from wip_batch_info a where a.finished_flag != 1) and b.PRODUCT_ID=c.PRODUCT_ID");
+	QSqlQuery query1(sql, *m_pDb);
+	while (query1.next())
+	{
+		refresh_info.patchID = query1.value(0).toInt();
+		refresh_info.patchCode = query1.value(1).toString();
+		refresh_info.preSetAmount = query1.value(2).toInt();
+		refresh_info.productID = query1.value(3).toInt();
+		refresh_info.productAmount = query1.value(4).toInt();
+		refresh_info.productName = query1.value(5).toString();
+	}
+	
+	sql = QString("select a.batch_id,b.MACHINE_ID,d.MACHINE_NAME,c.OPERATOR_ID,c.OPERATOR_NAME from\
+                           wip_batchs a,wip_batch_operator b,dic_operators c,dic_machines d where\
+                           a.BATCH_ID=b.BATCH_ID and b.OPERATOR_ID=c.OPERATOR_ID and b.MACHINE_ID=d.MACHINE_ID and a.check_flag=1 and b.OPERATOR_TYPE_ID=5");
+	QSqlQuery query2(sql, *m_pDb);
+	refresh_info.operatorCount = 0;
+	while (query2.next())
+	{
+		refresh_info.operator_info[refresh_info.operatorCount].patchID= query2.value(0).toInt();
+		refresh_info.operator_info[refresh_info.operatorCount].machineID = query2.value(1).toInt();
+		refresh_info.operator_info[refresh_info.operatorCount].machineName = query2.value(2).toString();
+		refresh_info.operator_info[refresh_info.operatorCount].operatorID = query2.value(3).toInt();
+		refresh_info.operator_info[refresh_info.operatorCount].operatorName = query2.value(4).toString();
+		refresh_info.operatorCount++;
+	}
+	sql = QString("select count(c.INSPECT_BOX_ID) as boxCount from wip_batchs a,qa_inspect_master b,qa_inspect_box_slave c\
+                           where a.BATCH_ID=b.BATCH_ID and b.INSPECTM_ID=c.INSPECTM_ID and a.BATCH_ID=%1").arg(refresh_info.operator_info->patchID);
+	QSqlQuery query3(sql, *m_pDb);
+	while (query3.next())
+	{
+		refresh_info.destroyBoxNum = query3.value(0).toInt();
+	}
+	sql = QString("select count(e.INSPECT_BAG_ID) as bagCount from qa_inspect_bag_slave e,(select c.INSPECT_BOX_ID from wip_batchs a,qa_inspect_master b,qa_inspect_box_slave c where\
+                           a.BATCH_ID=b.BATCH_ID and b.INSPECTM_ID=c.INSPECTM_ID and a.BATCH_ID=%1) f where  e.INSPECT_BOX_ID=f.INSPECT_BOX_ID").arg(refresh_info.operator_info->patchID);
+	QSqlQuery query4(sql, *m_pDb);
+	while (query4.next())
+	{
+		refresh_info.destroyBagNum = query4.value(0).toInt();
+		ret = true;
+	}
+	refresh_info.destroyNum = refresh_info.destroyBagNum * 1000 * refresh_info.productAmount;
+	return ret;
+}
+
 QSqlTableModel* DataBaseOperator::GetAllModel()
 {
 	QSqlTableModel* pModel = new QSqlTableModel(this, *m_pDb);

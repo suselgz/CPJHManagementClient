@@ -6,19 +6,20 @@
 
 #include <QFileDialog>
 #include "DispScene.h"
-#include "opencv2/opencv.hpp"
+
 class BagModify : public QWidget
 {
 	Q_OBJECT
 
 public:
-	BagModify(QWidget *parent = 0);
+	BagModify(int nClientNo);
 	~BagModify();
 
 private:
 	Ui::BagModify ui;
 	QDispScene *m_scene;
 	void InitDispScene();
+	void InitModifyInfo(int nClientNo);
 signals:
 	void sendUpdataToMain(int nClientNo);
 };

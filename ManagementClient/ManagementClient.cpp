@@ -6,16 +6,14 @@ ManagementClient::ManagementClient(QWidget *parent)
 {
 	ui.setupUi(this);
 	InitStatusBar();
-	InitClientInfo();
 	InitQssInfo();
+	InitClientAndDetialInfo();
 	SetClientInfoEnabled(true);
 	m_nSelClientNo = 0;
 	m_OnlineNetMsg = new QOnlineNetMsg();
 	m_OnlineNetMsg->InitSNetwork();
 	connect(m_OnlineNetMsg, &QOnlineNetMsg::SendNetConnected, this, &ManagementClient::RevNetConnectStatus);
 	connect(m_OnlineNetMsg, &QOnlineNetMsg::SendRevNumToPm, this, &ManagementClient::SetClientInfo);
-	
-	m_ClientDetial = ui.frame_clientDetial;
 	showMaximized();
 	this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
 	this->setWindowState(Qt::WindowFullScreen);
@@ -34,7 +32,30 @@ void ManagementClient::on_pushButton_Exit_clicked(void)
 
 void ManagementClient::ClientInfoChecked(int nClientNo)
 {
-	BagModify* bagModify = new BagModify();
+	//test
+
+	NET_MSG_MODIFY_INFO* modify_info = new NET_MSG_MODIFY_INFO;
+	cv::Mat srcImg = cv::imread("1.jpg");
+	modify_info->nSerial = 100000;
+	int a = srcImg.step;
+	modify_info->dataLen = srcImg.cols*srcImg.rows*srcImg.channels();
+	modify_info->imgWidth = srcImg.cols;
+	modify_info->imgHeight = srcImg.rows;
+	modify_info->imgStep = srcImg.step;
+	modify_info->nCheckNum = 9;
+	modify_info->checkResultType = 101;
+	modify_info->modifyResult = 0;
+	modify_info->packetDataBuf = new BYTE[modify_info->dataLen];
+	memcpy(modify_info->packetDataBuf, srcImg.data, modify_info->dataLen);
+	
+	GlobalParam::netMsg[0].push_back(modify_info);
+	//test
+
+	if (GlobalParam::netMsg[nClientNo].empty())
+	{
+		return;  //队列无数据则返回。
+	}
+	BagModify* bagModify = new BagModify(nClientNo);
 	bagModify->setWindowModality(Qt::ApplicationModal);
 	connect(bagModify, SIGNAL(sendUpdataToMain(int)), this, SLOT(RevModifyWidgetInfo(int)));
 	bagModify->show();
@@ -74,29 +95,39 @@ void ManagementClient::InitStatusBar(void)
 
 	QLabel *per3 = new QLabel("", this);
 
-	statusBar()->addPermanentWidget(per1); 
+	statusBar()->addPermanentWidget(per1);
 
-	statusBar()->addPermanentWidget(per2,2);
+	statusBar()->addPermanentWidget(per2, 2);
 
-	statusBar()->insertPermanentWidget(2, per3,3);
+	statusBar()->insertPermanentWidget(2, per3, 3);
 }
 
-void ManagementClient::InitClientInfo(void)
+void ManagementClient::InitClientAndDetialInfo(void)
 {
+	m_ClientDetial = ui.frame_clientDetial;
+
 	m_pClientInfo[0] = ui.frame_clintInfo00;
 	m_pClientInfo[1] = ui.frame_clintInfo01;
 	m_pClientInfo[2] = ui.frame_clintInfo02;
-	m_vecDicMachine.clear();
-	GlobalParam::dal.m_DataBaseOperator.GetDicMachineList(m_vecDicMachine);
-	for (int i = 0; i < m_vecDicMachine.size(); i++)
+	GET_REFRESH_INFO refresh_info;
+	if (!GlobalParam::dal.m_DataBaseOperator.GetRefreshInfo(refresh_info))
 	{
-		connect(m_pClientInfo[i], SIGNAL(ClientInfoChecked(int)), this, SLOT(ClientInfoChecked(int)));
+		//读取基础数据失败
+	}
+	m_ClientDetial->SetpatchCode(refresh_info.patchCode);
+	m_ClientDetial->SetproductType(refresh_info.productName);
+	m_ClientDetial->SetpreAmount(QString::number(refresh_info.preSetAmount));
+	m_ClientDetial->SetdestroyBox(refresh_info.destroyBoxNum);
+	m_ClientDetial->SetdestroyBag(refresh_info.destroyBagNum);
+	m_ClientDetial->SetdestroyNum(refresh_info.destroyNum);
+	for (int i = 0; i < refresh_info.operatorCount; i++)
+	{
 		m_pClientInfo[i]->m_nClientNo = i;
-		
-		auto iter = m_vecDicMachine.at(i);
-		GlobalParam::clintInfo[i].nMachineId = iter.MACHINE_ID;
-
-		GlobalParam::clintInfo[i].machineName = QString::fromStdString(iter.MACHINE_NAME);
+		connect(m_pClientInfo[i], SIGNAL(ClientInfoChecked(int)), this, SLOT(ClientInfoChecked(int)));
+		GlobalParam::clintInfo[i].nMachineId = refresh_info.operator_info[i].machineID;
+		GlobalParam::clintInfo[i].machineName = refresh_info.operator_info[i].machineName;
+		GlobalParam::clintInfo[i].nOperatorId = refresh_info.operator_info[i].operatorID;
+		GlobalParam::clintInfo[i].operatorName = refresh_info.operator_info[i].operatorName;
 		m_pClientInfo[i]->SetClientInfo(GlobalParam::clintInfo[i]);
 	}
 }
@@ -141,13 +172,13 @@ void ManagementClient::SetClientInfoEnabled(bool bEnabled /*= false*/)
 void ManagementClient::WriteMsgList(QString msg)
 {
 	QString time = QDateTime::currentDateTime().toString("hh:mm:ss");
-/*	int count = ui.listWidget->count();
-	QListWidgetItem *item = new QListWidgetItem;
-	item->setText(time + "   " + msg);
-	if (msg != NULL)
-	{
-		ui.listWidget->insertItem(count + 1, item);
-		GlobalParam::WriteLog(msg, "listLog");
-	}
-	ui.listWidget->scrollToBottom();*/
+	/*	int count = ui.listWidget->count();
+		QListWidgetItem *item = new QListWidgetItem;
+		item->setText(time + "   " + msg);
+		if (msg != NULL)
+		{
+			ui.listWidget->insertItem(count + 1, item);
+			GlobalParam::WriteLog(msg, "listLog");
+		}
+		ui.listWidget->scrollToBottom();*/
 }

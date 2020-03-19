@@ -35,11 +35,11 @@ struct NET_MSG_MODIFY_INFO
 	int     dataLen;
 	int     imgWidth;
 	int     imgHeight;
-	int     imgPitch;
-	int     machineID;
-	char	machine_name[10];
-	char	operator_name[10];	
-	char	product_type[10];
+	int     imgStep;
+// 	int     machineID;
+// 	char	machine_name[10];
+// 	char	operator_name[10];	
+// 	char	product_type[10];
 	int     nCheckNum;
 	int     checkResultType;
 	int     modifyResult;  /*0未处理，1已处理*/
@@ -52,11 +52,11 @@ struct NET_MSG_MODIFY_INFO
 		if (dataLen != cfg.dataLen)		return TRUE;
 		if (imgWidth != cfg.imgWidth)   return TRUE;
 		if (imgHeight != cfg.imgHeight)   return TRUE;
-		if (imgPitch != cfg.imgPitch)   return TRUE;
-		if (machineID != cfg.machineID)   return TRUE;
+		if (imgStep != cfg.imgStep)   return TRUE;
 		if (nCheckNum != cfg.nCheckNum)   return TRUE;
 		if (checkResultType != cfg.checkResultType)   return TRUE;
 		if (modifyResult != cfg.modifyResult)   return TRUE;
+		if (deleteInfoType != cfg.deleteInfoType)   return TRUE;
 		return FALSE;
 	}
 };
@@ -77,4 +77,26 @@ enum NET_MODIFY_FLAG
 {
 	MODIFY_NO = 0,
 	MODIFY_OK = 1
+};
+struct BATCH_OPERATOR_INFO
+{
+	int     patchID;
+	int     machineID;
+	QString machineName;
+	int     operatorID;
+	QString operatorName;
+};
+struct GET_REFRESH_INFO
+{
+	int     patchID;
+	QString patchCode;
+	int     productID;
+	int     productAmount;
+	QString productName;
+	INT64 preSetAmount;
+	int     operatorCount;
+	BATCH_OPERATOR_INFO operator_info[10];
+	int destroyNum;
+	int destroyBoxNum;
+	int destroyBagNum;
 };

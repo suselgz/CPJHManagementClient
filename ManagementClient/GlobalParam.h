@@ -4,7 +4,7 @@
 #include "DAL.h"
 #include "Define.h"
 #include "Netcmd.h"
-#include <vector> 
+#include <queue>
 using namespace std;
 class GlobalParam : public QObject
 {

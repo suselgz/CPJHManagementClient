@@ -131,12 +131,12 @@ void QOnlineNetMsg::OnServerRecvStationMsgData(void * userData, int stationID, N
 		else if (pModifyInfo->modifyResult == NET_MODIFY_FLAG::MODIFY_OK)
 		{
 			GlobalParam::clintInfo[index].nTotalRetrieve--;
-			for (vector<NET_MSG_MODIFY_INFO*>::iterator iter = GlobalParam::netMsg[0].begin(); iter != GlobalParam::netMsg[0].end(); ++iter)
+			for (vector<NET_MSG_MODIFY_INFO*>::iterator iter = GlobalParam::netMsg[index].begin(); iter != GlobalParam::netMsg[index].end(); ++iter)
 			{
 				NET_MSG_MODIFY_INFO* info = *iter;
 				if (info->nSerial == pModifyInfo->nSerial)
 				{
-					iter = GlobalParam::netMsg[0].erase(iter);
+					iter = GlobalParam::netMsg[index].erase(iter);
 				}
 			}
 			SendRevNumToPm(GlobalParam::clintInfo[index], machineCode);

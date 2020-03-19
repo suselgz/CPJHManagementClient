@@ -54,9 +54,9 @@ void ClientDetial::SetproductType(QString productType)
 	ui.label_productType->setText(productType);
 }
 
-void ClientDetial::SetpreSetNum(QString preSetNum)
+void ClientDetial::SetpreAmount(QString preAmoun)
 {
-	ui.label_preSetNum->setText(preSetNum);
+	ui.label_preSetAmount->setText(preAmoun);
 }
 
 void ClientDetial::SetdestroyNum(int destroyNum)
