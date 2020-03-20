@@ -139,6 +139,15 @@
     <ClCompile Include="QOnlineNetMsg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_RefreshThread.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_RefreshThread.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="RefreshThread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -209,9 +218,12 @@
     <CustomBuild Include="QOnlineNetMsg.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="RefreshThread.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Resources\style.qss">
+    <None Include="..\bin\style.qss">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>

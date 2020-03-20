@@ -18,10 +18,14 @@ public:
 private:
 	Ui::BagModify ui;
 	QDispScene *m_scene;
+	int m_nclientNo;
 	void InitDispScene();
 	void InitModifyInfo(int nClientNo);
 signals:
 	void sendUpdataToMain(int nClientNo);
+public slots:
+	void comboBoxSel();
+	void on_pushButton_OK_clicked();
 };
 
 #endif // BAGMODIFY_H

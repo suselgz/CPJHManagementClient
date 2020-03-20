@@ -18,10 +18,7 @@
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QSpacerItem>
-#include <QtWidgets/QTabWidget>
-#include <QtWidgets/QTableView>
 #include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
 
@@ -50,19 +47,12 @@ public:
     QLabel *label_destroyNum;
     QSpacerItem *horizontalSpacer;
     QSpacerItem *horizontalSpacer_2;
-    QTabWidget *tabWidget;
-    QWidget *tab;
-    QVBoxLayout *verticalLayout;
-    QTableView *tableView_modifyDetial;
-    QWidget *tab_3;
-    QVBoxLayout *verticalLayout_3;
-    QTableView *tableView_logDetial;
 
     void setupUi(QFrame *ClientDetial)
     {
         if (ClientDetial->objectName().isEmpty())
             ClientDetial->setObjectName(QStringLiteral("ClientDetial"));
-        ClientDetial->resize(523, 308);
+        ClientDetial->resize(523, 175);
         ClientDetial->setStyleSheet(QStringLiteral(""));
         verticalLayout_2 = new QVBoxLayout(ClientDetial);
         verticalLayout_2->setSpacing(6);
@@ -178,41 +168,8 @@ public:
 
         verticalLayout_2->addLayout(gridLayout);
 
-        tabWidget = new QTabWidget(ClientDetial);
-        tabWidget->setObjectName(QStringLiteral("tabWidget"));
-        tabWidget->setStyleSheet(QStringLiteral(""));
-        tab = new QWidget();
-        tab->setObjectName(QStringLiteral("tab"));
-        verticalLayout = new QVBoxLayout(tab);
-        verticalLayout->setSpacing(6);
-        verticalLayout->setContentsMargins(11, 11, 11, 11);
-        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
-        tableView_modifyDetial = new QTableView(tab);
-        tableView_modifyDetial->setObjectName(QStringLiteral("tableView_modifyDetial"));
-
-        verticalLayout->addWidget(tableView_modifyDetial);
-
-        tabWidget->addTab(tab, QString());
-        tab_3 = new QWidget();
-        tab_3->setObjectName(QStringLiteral("tab_3"));
-        verticalLayout_3 = new QVBoxLayout(tab_3);
-        verticalLayout_3->setSpacing(6);
-        verticalLayout_3->setContentsMargins(11, 11, 11, 11);
-        verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
-        tableView_logDetial = new QTableView(tab_3);
-        tableView_logDetial->setObjectName(QStringLiteral("tableView_logDetial"));
-
-        verticalLayout_3->addWidget(tableView_logDetial);
-
-        tabWidget->addTab(tab_3, QString());
-
-        verticalLayout_2->addWidget(tabWidget);
-
 
         retranslateUi(ClientDetial);
-
-        tabWidget->setCurrentIndex(1);
-
 
         QMetaObject::connectSlotsByName(ClientDetial);
     } // setupUi
@@ -238,8 +195,6 @@ public:
         label_machineName->setText(QApplication::translate("ClientDetial", "\346\211\271\346\254\241\347\274\226\345\217\267\357\274\232", 0));
         label_operatorName->setText(QApplication::translate("ClientDetial", "\344\272\247\345\223\201\347\261\273\345\236\213\357\274\232", 0));
         label_destroyNum->setText(QApplication::translate("ClientDetial", "\344\277\241\346\201\257", 0));
-        tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("ClientDetial", "\344\277\256\346\224\271\350\257\246\346\203\205", 0));
-        tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("ClientDetial", "\346\227\245\345\277\227\350\257\246\346\203\205", 0));
     } // retranslateUi
 
 };

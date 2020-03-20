@@ -36,18 +36,23 @@ public:
     QAction *action_exit;
     QAction *action_setting;
     QWidget *centralWidget;
-    QVBoxLayout *verticalLayout;
+    QVBoxLayout *verticalLayout_2;
+    QSpacerItem *verticalSpacer_3;
     QHBoxLayout *horizontalLayout_2;
     QLabel *label_appTitle;
     QSpacerItem *horizontalSpacer;
     QPushButton *pushButton_Exit;
+    QSpacerItem *verticalSpacer;
     QHBoxLayout *horizontalLayout;
     QGridLayout *gridLayout;
     ClientInfo *frame_clintInfo00;
     ClientInfo *frame_clintInfo01;
     ClientInfo *frame_clintInfo02;
     QFrame *frame_clintInfo03;
+    QVBoxLayout *verticalLayout;
     ClientDetial *frame_clientDetial;
+    QFrame *frame_modify;
+    QSpacerItem *verticalSpacer_2;
     QMenuBar *menuBar;
     QStatusBar *statusBar;
 
@@ -69,10 +74,14 @@ public:
         action_setting->setIcon(icon1);
         centralWidget = new QWidget(ManagementClientClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
-        verticalLayout = new QVBoxLayout(centralWidget);
-        verticalLayout->setSpacing(6);
-        verticalLayout->setContentsMargins(11, 11, 11, 11);
-        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        verticalLayout_2 = new QVBoxLayout(centralWidget);
+        verticalLayout_2->setSpacing(6);
+        verticalLayout_2->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
+        verticalSpacer_3 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout_2->addItem(verticalSpacer_3);
+
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setSpacing(6);
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
@@ -93,7 +102,11 @@ public:
         horizontalLayout_2->addWidget(pushButton_Exit);
 
 
-        verticalLayout->addLayout(horizontalLayout_2);
+        verticalLayout_2->addLayout(horizontalLayout_2);
+
+        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout_2->addItem(verticalSpacer);
 
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setSpacing(6);
@@ -103,6 +116,7 @@ public:
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
         frame_clintInfo00 = new ClientInfo(centralWidget);
         frame_clintInfo00->setObjectName(QStringLiteral("frame_clintInfo00"));
+        frame_clintInfo00->setStyleSheet(QStringLiteral(""));
         frame_clintInfo00->setFrameShape(QFrame::StyledPanel);
         frame_clintInfo00->setFrameShadow(QFrame::Raised);
 
@@ -132,6 +146,9 @@ public:
 
         horizontalLayout->addLayout(gridLayout);
 
+        verticalLayout = new QVBoxLayout();
+        verticalLayout->setSpacing(6);
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         frame_clientDetial = new ClientDetial(centralWidget);
         frame_clientDetial->setObjectName(QStringLiteral("frame_clientDetial"));
         QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
@@ -145,10 +162,26 @@ public:
         frame_clientDetial->setFrameShape(QFrame::Box);
         frame_clientDetial->setFrameShadow(QFrame::Raised);
 
-        horizontalLayout->addWidget(frame_clientDetial);
+        verticalLayout->addWidget(frame_clientDetial);
+
+        frame_modify = new QFrame(centralWidget);
+        frame_modify->setObjectName(QStringLiteral("frame_modify"));
+        frame_modify->setMinimumSize(QSize(0, 0));
+        frame_modify->setStyleSheet(QStringLiteral(""));
+        frame_modify->setFrameShape(QFrame::StyledPanel);
+        frame_modify->setFrameShadow(QFrame::Raised);
+
+        verticalLayout->addWidget(frame_modify);
 
 
-        verticalLayout->addLayout(horizontalLayout);
+        horizontalLayout->addLayout(verticalLayout);
+
+
+        verticalLayout_2->addLayout(horizontalLayout);
+
+        verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout_2->addItem(verticalSpacer_2);
 
         ManagementClientClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(ManagementClientClass);

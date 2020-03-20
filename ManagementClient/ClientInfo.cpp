@@ -8,7 +8,8 @@ ClientInfo::ClientInfo(QWidget *parent)
 	m_bSel = true;
 	m_timer = new QTimer(this);
 	connect(m_timer, SIGNAL(timeout()), this, SLOT(TimeOut()));
-	SetChecked(false);
+//	SetChecked(false);
+	
 	ReSet();
 }
 
@@ -18,7 +19,7 @@ ClientInfo::~ClientInfo()
 
 void ClientInfo::mousePressEvent(QMouseEvent *event)
 {
-	SetChecked(true);
+//	SetChecked(true);
 	emit ClientInfoChecked(m_nClientNo);
 }
 
@@ -30,6 +31,7 @@ void ClientInfo::SetLight(bool nRct)
 	}
 	else
 	{
+		this->setStyleSheet("background-color: rgb(200,240,210);");
 		m_timer->stop();
 	}
 	
@@ -39,11 +41,12 @@ void ClientInfo::SetChecked(bool bChecked)
 {
 	if (bChecked == false)
 	{
-		this->setStyleSheet("background-color: rgb(191,220,237 );");
+		this->setStyleSheet("background-color: rgb(200,210,240 );");
 	}
 	else
 	{
-		this->setStyleSheet("background-color: rgb(163,227,211);");
+		this->setStyleSheet("background-color: rgb(240,210,200);");
+//		this->setStyleSheet("background-color: rgb(163,227,211);");
 	}
 }
 

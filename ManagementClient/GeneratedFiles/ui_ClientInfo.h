@@ -40,7 +40,7 @@ public:
             ClientInfo->setObjectName(QStringLiteral("ClientInfo"));
         ClientInfo->resize(232, 223);
         ClientInfo->setAutoFillBackground(true);
-        ClientInfo->setStyleSheet(QStringLiteral("font: 75 12pt \"Agency FB\";"));
+        ClientInfo->setStyleSheet(QStringLiteral(""));
         ClientInfo->setFrameShape(QFrame::Box);
         gridLayout_2 = new QGridLayout(ClientInfo);
         gridLayout_2->setSpacing(6);

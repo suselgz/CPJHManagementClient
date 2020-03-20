@@ -59,7 +59,7 @@ bool DataBaseOperator::GetRefreshInfo(GET_REFRESH_INFO &refresh_info)
 	
 	sql = QString("select a.batch_id,b.MACHINE_ID,d.MACHINE_NAME,c.OPERATOR_ID,c.OPERATOR_NAME from\
                            wip_batchs a,wip_batch_operator b,dic_operators c,dic_machines d where\
-                           a.BATCH_ID=b.BATCH_ID and b.OPERATOR_ID=c.OPERATOR_ID and b.MACHINE_ID=d.MACHINE_ID and a.check_flag=1 and b.OPERATOR_TYPE_ID=5");
+                           a.BATCH_ID=b.BATCH_ID and b.OPERATOR_ID=c.OPERATOR_ID and b.MACHINE_ID=d.MACHINE_ID and a.check_flag=1 and b.OPERATOR_TYPE_ID=5 ORDER BY b.MACHINE_ID");
 	QSqlQuery query2(sql, *m_pDb);
 	refresh_info.operatorCount = 0;
 	while (query2.next())
