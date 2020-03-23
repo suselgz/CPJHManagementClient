@@ -61,7 +61,7 @@ void ManagementClient::ClientInfoChecked(int nClientNo)
 	BagModify* bagModify= new BagModify(nClientNo);
 	bagModify->resize(800,400);
 	bagModify->setWindowModality(Qt::ApplicationModal);
-	connect(bagModify, SIGNAL(sendUpdataToMain(int)), this, SLOT(RevModifyWidgetInfo(int)));
+	connect(bagModify, SIGNAL(sendUpdataToMain(NET_MSG_MODIFY_INFO*,int)), this, SLOT(RevModifyWidgetInfo(NET_MSG_MODIFY_INFO*,int)));
 	bagModify->show();
 	bagModify->move(x+80, y+40);
 }
@@ -71,26 +71,26 @@ void ManagementClient::RevNetConnectStatus(NET_CONNECT_STATUS net_status)
 	m_ClientDetial->SetNetConnectStatus(net_status);
 }
 
-void ManagementClient::RevModifyWidgetInfo(int nClientNo)
+void ManagementClient::RevModifyWidgetInfo(NET_MSG_MODIFY_INFO* modify_info, int nClientNo)
 {
 	switch (nClientNo)
 	{
 	case NET_CONNECT_MACHINE_CODE::MACHINE1_CODE:
-		GlobalParam::clintInfo[0].nTotalRetrieve--;
-		SetClientInfo(GlobalParam::clintInfo[0], NET_CONNECT_MACHINE_CODE::MACHINE1_CODE);
+		GlobalParam::clintInfo[nClientNo].nTotalRetrieve--;
+		SetClientInfo(GlobalParam::clintInfo[nClientNo], NET_CONNECT_MACHINE_CODE::MACHINE1_CODE);
 		break;
 	case NET_CONNECT_MACHINE_CODE::MACHINE2_CODE:
-		GlobalParam::clintInfo[1].nTotalRetrieve--;
-		SetClientInfo(GlobalParam::clintInfo[1], NET_CONNECT_MACHINE_CODE::MACHINE2_CODE);
+		GlobalParam::clintInfo[nClientNo].nTotalRetrieve--;
+		SetClientInfo(GlobalParam::clintInfo[nClientNo], NET_CONNECT_MACHINE_CODE::MACHINE2_CODE);
 		break;
 	case NET_CONNECT_MACHINE_CODE::MACHINE3_CODE:
-		GlobalParam::clintInfo[2].nTotalRetrieve--;
-		SetClientInfo(GlobalParam::clintInfo[2], NET_CONNECT_MACHINE_CODE::MACHINE3_CODE);
+		GlobalParam::clintInfo[nClientNo].nTotalRetrieve--;
+		SetClientInfo(GlobalParam::clintInfo[nClientNo], NET_CONNECT_MACHINE_CODE::MACHINE3_CODE);
 		break;
 	default:
 		break;
 	}
-
+	m_OnlineNetMsg->SendMsgToMachine(modify_info, nClientNo);
 	if (GlobalParam::netMsg[nClientNo].empty())
 	{
 		m_pClientInfo[nClientNo]->SetLight(false);
@@ -146,13 +146,13 @@ void ManagementClient::SetClientInfo(CLIENT_INFO client_info, int machineCode)
 	switch (machineCode)
 	{
 	case NET_CONNECT_MACHINE_CODE::MACHINE1_CODE:
-		m_pClientInfo[0]->SetClientInfo(client_info);
+		m_pClientInfo[machineCode]->SetClientInfo(client_info);
 		break;
 	case NET_CONNECT_MACHINE_CODE::MACHINE2_CODE:
-		m_pClientInfo[1]->SetClientInfo(client_info);
+		m_pClientInfo[machineCode]->SetClientInfo(client_info);
 		break;
 	case NET_CONNECT_MACHINE_CODE::MACHINE3_CODE:
-		m_pClientInfo[2]->SetClientInfo(client_info);
+		m_pClientInfo[machineCode]->SetClientInfo(client_info);
 		break;
 	default:
 		break;
@@ -196,8 +196,8 @@ void ManagementClient::Test()
 	modify_info->imgHeight = srcImg.rows;
 	modify_info->imgStep = srcImg.step;
 	modify_info->nCheckNum = 9;
-	modify_info->checkResultType = 101;
-	modify_info->modifyResult = 0;
+	modify_info->checkResultType = 100;
+	modify_info->modifyFinish = 0;
 	modify_info->packetDataBuf = new BYTE[modify_info->dataLen];
 	memcpy(modify_info->packetDataBuf, srcImg.data, modify_info->dataLen);
 

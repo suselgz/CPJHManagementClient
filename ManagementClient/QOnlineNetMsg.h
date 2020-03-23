@@ -30,7 +30,7 @@ public:
 	void InitSNetwork();
 	void InitCNetwork();
 	void FreeNetwork();
-	bool SendMsgToMachine(int nSerial,int nMachineID);
+	bool SendMsgToMachine(NET_MSG_MODIFY_INFO *send_info,int nMachineID);
 signals:
 	void SendNetConnected(NET_CONNECT_STATUS);
 	void SendRevNumToPm(CLIENT_INFO,int);

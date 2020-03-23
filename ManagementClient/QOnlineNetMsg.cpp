@@ -94,52 +94,48 @@ void QOnlineNetMsg::OnServerStationDisconnected(void * userData, int stationID)
 void QOnlineNetMsg::OnServerRecvStationMsgData(void * userData, int stationID, NET_MSG_PACKET_HEAD * msg, BYTE * packetData)
 {
 	NET_MSG_MODIFY_INFO * pModifyInfo;
-	int index = -1;
-	int machineCode = 0;
+	int machineCode = -1;
 	if (userData == (void *)m_pNetServer)
 	{
 		switch (msg->packet_type)
 		{
 		case NETPACKET_TYPE_TOVS_MACHINE1:
-			index = 0;
 			machineCode = NET_CONNECT_MACHINE_CODE::MACHINE1_CODE;
 			break;
 		case NETPACKET_TYPE_TOVS_MACHINE2:
-			index = 1;
 			machineCode = NET_CONNECT_MACHINE_CODE::MACHINE2_CODE;
 			break;
 		case NETPACKET_TYPE_TOVS_MACHINE3:
-			index = 2;
 			machineCode = NET_CONNECT_MACHINE_CODE::MACHINE3_CODE;
 			break;
 		default:
 			break;
 		}
-		if (index < 0)
+		if (machineCode < 0)
 		{
 			return;
 		}
 		pModifyInfo = (NET_MSG_MODIFY_INFO *)&msg->PacketReserved;
-		if (pModifyInfo->modifyResult == NET_MODIFY_FLAG::MODIFY_NO)
+		if (pModifyInfo->modifyFinish == NET_MODIFY_FLAG::MODIFY_NO)
 		{
 			memcpy(pModifyInfo->packetDataBuf, packetData, pModifyInfo->dataLen);
-			GlobalParam::netMsg[index].push_back(pModifyInfo);
-			GlobalParam::clintInfo[index].nTotalRecive++;
-			GlobalParam::clintInfo[index].nTotalRetrieve++;
-			SendRevNumToPm(GlobalParam::clintInfo[index], machineCode);
+			GlobalParam::netMsg[machineCode].push_back(pModifyInfo);
+			GlobalParam::clintInfo[machineCode].nTotalRecive++;
+			GlobalParam::clintInfo[machineCode].nTotalRetrieve++;
+			SendRevNumToPm(GlobalParam::clintInfo[machineCode], machineCode);
 		}
-		else if (pModifyInfo->modifyResult == NET_MODIFY_FLAG::MODIFY_OK)
+		else if (pModifyInfo->modifyFinish == NET_MODIFY_FLAG::MODIFY_OK)
 		{
-			GlobalParam::clintInfo[index].nTotalRetrieve--;
-			for (vector<NET_MSG_MODIFY_INFO*>::iterator iter = GlobalParam::netMsg[index].begin(); iter != GlobalParam::netMsg[index].end(); ++iter)
+			GlobalParam::clintInfo[machineCode].nTotalRetrieve--;
+			for (vector<NET_MSG_MODIFY_INFO*>::iterator iter = GlobalParam::netMsg[machineCode].begin(); iter != GlobalParam::netMsg[machineCode].end(); ++iter)
 			{
 				NET_MSG_MODIFY_INFO* info = *iter;
 				if (info->nSerial == pModifyInfo->nSerial)
 				{
-					iter = GlobalParam::netMsg[index].erase(iter);
+					iter = GlobalParam::netMsg[machineCode].erase(iter);
 				}
 			}
-			SendRevNumToPm(GlobalParam::clintInfo[index], machineCode);
+			SendRevNumToPm(GlobalParam::clintInfo[machineCode], machineCode);
 		}
 	}
 }
@@ -182,33 +178,28 @@ void QOnlineNetMsg::FreeNetwork()
 	}
 }
 
-bool QOnlineNetMsg::SendMsgToMachine(int nSerial, int nMachineID)
+bool QOnlineNetMsg::SendMsgToMachine(NET_MSG_MODIFY_INFO *send_info, int nMachineID)
 {
-	int index = -1;
 	NET_MSG_PACKET_HEAD sendMsg;
 	switch (nMachineID)
 	{
 	case NET_CONNECT_MACHINE_CODE::MACHINE1_CODE:
 		sendMsg.stationID = NET_CONNECT_MACHINE_CODE::MACHINE1_CODE;
 		sendMsg.packet_type = NETPACKET_TYPE_TOVS_MACHINE1;
-		index = 0;
 		break;
 	case NET_CONNECT_MACHINE_CODE::MACHINE2_CODE:
 		sendMsg.stationID = NET_CONNECT_MACHINE_CODE::MACHINE2_CODE;
 		sendMsg.packet_type = NETPACKET_TYPE_TOVS_MACHINE2;
-		index = 1;
 		break;
 	case NET_CONNECT_MACHINE_CODE::MACHINE3_CODE:
 		sendMsg.stationID = NET_CONNECT_MACHINE_CODE::MACHINE3_CODE;
 		sendMsg.packet_type = NETPACKET_TYPE_TOVS_MACHINE3;
-		index = 2;
 		break;
 	default:
 		break;
 	}
-	NET_MSG_MODIFY_INFO *pInfoToPm = (NET_MSG_MODIFY_INFO *)&sendMsg.PacketReserved;
-	pInfoToPm->nSerial = nSerial;
-	pInfoToPm->modifyResult = NET_MODIFY_FLAG::MODIFY_OK;
-	m_pNetServer->SendMsgToClient(m_nStationID[index], &sendMsg, NULL, 0);
+	NET_MSG_MODIFY_INFO *info = (NET_MSG_MODIFY_INFO *)&sendMsg.PacketReserved;
+	info = send_info;
+	m_pNetServer->SendMsgToClient(m_nStationID[nMachineID], &sendMsg, NULL, 0);
 	return true;
 }

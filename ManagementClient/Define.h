@@ -29,6 +29,7 @@ typedef struct CLIENT_INFO_TAG
 #define NETPACKET_TYPE_TOVS_MACHINE2		        0x1C		//机器2发送数据
 #define NETPACKET_TYPE_TOVS_MACHINE3		        0x1D		//机器3发送数据
 
+#define MODIFY_DELETEIMAGE_FLAG 9
 struct NET_MSG_MODIFY_INFO
 {
 	INT64	nSerial;
@@ -36,13 +37,9 @@ struct NET_MSG_MODIFY_INFO
 	int     imgWidth;
 	int     imgHeight;
 	int     imgStep;
-// 	int     machineID;
-// 	char	machine_name[10];
-// 	char	operator_name[10];	
-// 	char	product_type[10];
 	int     nCheckNum;
 	int     checkResultType;
-	int     modifyResult;  /*0未处理，1已处理*/
+	int     modifyFinish;  /*0未处理，1已处理*/
 	int     deleteInfoType;
 	BYTE*   packetDataBuf;
 	BYTE	reserved[256 - sizeof(int) * 2 - sizeof(INT64)];
@@ -55,7 +52,7 @@ struct NET_MSG_MODIFY_INFO
 		if (imgStep != cfg.imgStep)   return TRUE;
 		if (nCheckNum != cfg.nCheckNum)   return TRUE;
 		if (checkResultType != cfg.checkResultType)   return TRUE;
-		if (modifyResult != cfg.modifyResult)   return TRUE;
+		if (modifyFinish != cfg.modifyFinish)   return TRUE;
 		if (deleteInfoType != cfg.deleteInfoType)   return TRUE;
 		return FALSE;
 	}
@@ -77,6 +74,12 @@ enum NET_MODIFY_FLAG
 {
 	MODIFY_NO = 0,
 	MODIFY_OK = 1
+};
+enum RESULT_ERRTYPE {
+	NumErr = 1,
+	Smuggle = 10,
+	Envelope = 100,
+	Tangle = 1000
 };
 struct BATCH_OPERATOR_INFO
 {

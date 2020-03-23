@@ -36,15 +36,14 @@ public:
     QVBoxLayout *verticalLayout;
     QGroupBox *groupBox_2;
     QGridLayout *gridLayout_2;
-    QSpacerItem *verticalSpacer_8;
     QSpacerItem *horizontalSpacer;
-    QSpacerItem *verticalSpacer_7;
-    QSpacerItem *horizontalSpacer_3;
-    QLabel *label_serial;
+    QSpacerItem *verticalSpacer_8;
     QLabel *label_machineName;
+    QLabel *label_12;
+    QSpacerItem *verticalSpacer_7;
     QLabel *label_9;
     QSpacerItem *verticalSpacer_6;
-    QLabel *label_12;
+    QLabel *label_serial;
     QGroupBox *groupBox;
     QGridLayout *gridLayout;
     QSpacerItem *horizontalSpacer_6;
@@ -91,31 +90,27 @@ public:
         gridLayout_2->setSpacing(6);
         gridLayout_2->setContentsMargins(11, 11, 11, 11);
         gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
+        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout_2->addItem(horizontalSpacer, 1, 2, 1, 1);
+
         verticalSpacer_8 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         gridLayout_2->addItem(verticalSpacer_8, 6, 0, 1, 1);
 
-        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        label_machineName = new QLabel(groupBox_2);
+        label_machineName->setObjectName(QStringLiteral("label_machineName"));
 
-        gridLayout_2->addItem(horizontalSpacer, 1, 3, 1, 1);
+        gridLayout_2->addWidget(label_machineName, 1, 1, 1, 1);
+
+        label_12 = new QLabel(groupBox_2);
+        label_12->setObjectName(QStringLiteral("label_12"));
+
+        gridLayout_2->addWidget(label_12, 1, 0, 1, 1);
 
         verticalSpacer_7 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         gridLayout_2->addItem(verticalSpacer_7, 2, 0, 1, 1);
-
-        horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        gridLayout_2->addItem(horizontalSpacer_3, 5, 1, 1, 1);
-
-        label_serial = new QLabel(groupBox_2);
-        label_serial->setObjectName(QStringLiteral("label_serial"));
-
-        gridLayout_2->addWidget(label_serial, 5, 2, 1, 1);
-
-        label_machineName = new QLabel(groupBox_2);
-        label_machineName->setObjectName(QStringLiteral("label_machineName"));
-
-        gridLayout_2->addWidget(label_machineName, 1, 2, 1, 1);
 
         label_9 = new QLabel(groupBox_2);
         label_9->setObjectName(QStringLiteral("label_9"));
@@ -126,10 +121,10 @@ public:
 
         gridLayout_2->addItem(verticalSpacer_6, 0, 0, 1, 1);
 
-        label_12 = new QLabel(groupBox_2);
-        label_12->setObjectName(QStringLiteral("label_12"));
+        label_serial = new QLabel(groupBox_2);
+        label_serial->setObjectName(QStringLiteral("label_serial"));
 
-        gridLayout_2->addWidget(label_12, 1, 0, 1, 1);
+        gridLayout_2->addWidget(label_serial, 5, 1, 1, 1);
 
 
         verticalLayout->addWidget(groupBox_2);
@@ -238,10 +233,10 @@ public:
     {
         BagModify->setWindowTitle(QApplication::translate("BagModify", "\351\224\231\350\257\257\344\277\256\346\224\271\345\257\271\350\257\235\346\241\206", 0));
         groupBox_2->setTitle(QString());
-        label_serial->setText(QApplication::translate("BagModify", "\344\277\241\346\201\257", 0));
         label_machineName->setText(QApplication::translate("BagModify", "\344\277\241\346\201\257", 0));
-        label_9->setText(QApplication::translate("BagModify", "\351\222\261\346\215\206\345\272\217\345\217\267\357\274\232", 0));
         label_12->setText(QApplication::translate("BagModify", "\346\234\272\345\217\260\344\277\241\346\201\257\357\274\232", 0));
+        label_9->setText(QApplication::translate("BagModify", "\351\222\261\346\215\206\345\272\217\345\217\267\357\274\232", 0));
+        label_serial->setText(QApplication::translate("BagModify", "\344\277\241\346\201\257", 0));
         groupBox->setTitle(QString());
         label_2->setText(QApplication::translate("BagModify", "\346\212\245\350\255\246\347\261\273\345\236\213\357\274\232", 0));
         label_3->setText(QApplication::translate("BagModify", "\346\230\257\345\220\246\345\210\240\345\233\276\357\274\232", 0));

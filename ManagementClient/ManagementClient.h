@@ -43,5 +43,5 @@ private slots:
 	void ClientInfoChecked(int nClientNo);
 	void RevNetConnectStatus(NET_CONNECT_STATUS net_status);
 	void SetClientInfo(CLIENT_INFO client_info, int machineCode);
-	void RevModifyWidgetInfo(int nClientNo);
+	void RevModifyWidgetInfo(NET_MSG_MODIFY_INFO* modify_info,int nClientNo);
 };

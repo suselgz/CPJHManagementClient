@@ -24,7 +24,7 @@ void RefreshThread::run()
 		{
 			sendInfoToMain(refresh_info);
 		}
-		Sleep(5000);
+		Sleep(10000);
 	}
 
 }
