@@ -37,6 +37,8 @@ QOnlineNetMsg::QOnlineNetMsg()
 {
 	memset(&m_net_status, 0, sizeof(NET_CONNECT_STATUS));
 	qRegisterMetaType<NET_CONNECT_STATUS>("NET_CONNECT_STATUS");
+	qRegisterMetaType<CLIENT_INFO>("CLIENT_INFO");
+
 }
 
 QOnlineNetMsg::~QOnlineNetMsg()
@@ -93,7 +95,10 @@ void QOnlineNetMsg::OnServerStationDisconnected(void * userData, int stationID)
 
 void QOnlineNetMsg::OnServerRecvStationMsgData(void * userData, int stationID, NET_MSG_PACKET_HEAD * msg, BYTE * packetData)
 {
-	NET_MSG_MODIFY_INFO * pModifyInfo;
+	if (userData == NULL)
+	{
+		return;
+	}
 	int machineCode = -1;
 	if (userData == (void *)m_pNetServer)
 	{
@@ -115,11 +120,31 @@ void QOnlineNetMsg::OnServerRecvStationMsgData(void * userData, int stationID, N
 		{
 			return;
 		}
+		NET_MSG_MODIFY_INFO * pModifyInfo;
 		pModifyInfo = (NET_MSG_MODIFY_INFO *)&msg->PacketReserved;
+
+
+		QString tempfileName = "D:\\2.jpg";
+		QFile file(tempfileName);
+		file.open(QIODevice::WriteOnly);
+		file.write((char*)packetData, pModifyInfo->dataLen);
+		file.close();
+		FILE* fp;
+		char fname[50] = "D:\\3.jpg";
+		fp = fopen(fname, "wb+"); //wb+ 以读写方式打开或建立二进制文件
+		if (fp == NULL)
+		{
+			return;//建立失败
+		}
+		fwrite(pModifyInfo->packetDataBuf, sizeof(char), pModifyInfo->dataLen, fp);
+		fclose(fp);
+		
+		//cv::Mat img = cv::Mat::zeros(pModifyInfo->imgHeight, pModifyInfo->imgWidth, CV_8UC3);
+		//memcpy(img.data, pModifyInfo->packetDataBuf, pModifyInfo->dataLen);
+
 		if (pModifyInfo->modifyFinish == NET_MODIFY_FLAG::MODIFY_NO)
 		{
-			memcpy(pModifyInfo->packetDataBuf, packetData, pModifyInfo->dataLen);
-			GlobalParam::netMsg[machineCode].push_back(pModifyInfo);
+			GlobalParam::netMsg[machineCode].push(*pModifyInfo);
 			GlobalParam::clintInfo[machineCode].nTotalRecive++;
 			GlobalParam::clintInfo[machineCode].nTotalRetrieve++;
 			SendRevNumToPm(GlobalParam::clintInfo[machineCode], machineCode);
@@ -127,13 +152,9 @@ void QOnlineNetMsg::OnServerRecvStationMsgData(void * userData, int stationID, N
 		else if (pModifyInfo->modifyFinish == NET_MODIFY_FLAG::MODIFY_OK)
 		{
 			GlobalParam::clintInfo[machineCode].nTotalRetrieve--;
-			for (vector<NET_MSG_MODIFY_INFO*>::iterator iter = GlobalParam::netMsg[machineCode].begin(); iter != GlobalParam::netMsg[machineCode].end(); ++iter)
+			if (!GlobalParam::netMsg[machineCode].empty())
 			{
-				NET_MSG_MODIFY_INFO* info = *iter;
-				if (info->nSerial == pModifyInfo->nSerial)
-				{
-					iter = GlobalParam::netMsg[machineCode].erase(iter);
-				}
+				GlobalParam::netMsg[machineCode].pop();
 			}
 			SendRevNumToPm(GlobalParam::clintInfo[machineCode], machineCode);
 		}
@@ -181,6 +202,8 @@ void QOnlineNetMsg::FreeNetwork()
 bool QOnlineNetMsg::SendMsgToMachine(NET_MSG_MODIFY_INFO *send_info, int nMachineID)
 {
 	NET_MSG_PACKET_HEAD sendMsg;
+	sendMsg.type = 8;
+	sendMsg.timestamp = (int)GetCurTimeMS();
 	switch (nMachineID)
 	{
 	case NET_CONNECT_MACHINE_CODE::MACHINE1_CODE:
@@ -198,8 +221,12 @@ bool QOnlineNetMsg::SendMsgToMachine(NET_MSG_MODIFY_INFO *send_info, int nMachin
 	default:
 		break;
 	}
-	NET_MSG_MODIFY_INFO *info = (NET_MSG_MODIFY_INFO *)&sendMsg.PacketReserved;
-	info = send_info;
+	NET_MSG_MODIFY_INFO *pInfoToPm = (NET_MSG_MODIFY_INFO *)&sendMsg.PacketReserved;
+	pInfoToPm->nSerial = send_info->nSerial;
+	pInfoToPm->nCheckNum = send_info->nCheckNum;
+	pInfoToPm->checkResultType = send_info->checkResultType;
+	pInfoToPm->modifyFinish = send_info->modifyFinish;
+	pInfoToPm->deleteInfoType = send_info->deleteInfoType;
 	m_pNetServer->SendMsgToClient(m_nStationID[nMachineID], &sendMsg, NULL, 0);
 	return true;
 }

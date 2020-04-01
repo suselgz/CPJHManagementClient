@@ -8,8 +8,6 @@ ClientInfo::ClientInfo(QWidget *parent)
 	m_bSel = true;
 	m_timer = new QTimer(this);
 	connect(m_timer, SIGNAL(timeout()), this, SLOT(TimeOut()));
-//	SetChecked(false);
-	
 	ReSet();
 }
 

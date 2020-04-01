@@ -9,6 +9,7 @@ BagModify::BagModify(int nClientNo)
 	InitDispScene();
 	this->setWindowFlags(Qt::Widget | Qt::WindowStaysOnTopHint);
 	InitModifyInfo(nClientNo);
+	this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
 }
 
 BagModify::~BagModify()
@@ -25,42 +26,61 @@ void BagModify::InitDispScene()
 	ui.graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
 	ui.graphicsView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 	ui.graphicsView->setRenderHints(QPainter::SmoothPixmapTransform |
-	QPainter::TextAntialiasing |
-	QPainter::Antialiasing);
+		QPainter::TextAntialiasing |
+		QPainter::Antialiasing);
 }
 
 void BagModify::InitModifyInfo(int nClientNo)
 {
+	m_modify_info = GlobalParam::netMsg[nClientNo].front();
 	//number
 	connect(ui.comboBox_identfyNum, SIGNAL(currentIndexChanged(QString)), this, SLOT(comboBoxSel()));
 	ui.comboBox_identfyNum->setCurrentIndex(10);
 	m_comBoSelIndex = 10;
-	//errType
-	m_modify_info = GlobalParam::netMsg[nClientNo].front();
-	ui.label_machineName->setText(GlobalParam::clintInfo[nClientNo].machineName);
-	ui.label_serial->setText(QString::number(m_modify_info->nSerial));
 
-	if (m_modify_info->checkResultType / 1 % 10)
+	ui.label_machineName->setText(GlobalParam::clintInfo[nClientNo].machineName);
+	ui.label_serial->setText(QString::number(m_modify_info.nSerial));
+
+	if (m_modify_info.checkResultType / 1 % 10)
 	{
 		//把数错误
 		ui.checkBox_numErrType->setCheckState(Qt::Checked);
 	}
-	if (m_modify_info->checkResultType / 10 % 10)
+	if (m_modify_info.checkResultType / 10 % 10)
 	{
 		//夹把
 	}
-	if (m_modify_info->checkResultType / 100 % 10)
+	if (m_modify_info.checkResultType / 100 % 10)
 	{
 		//信封
 		ui.checkBox_envelope->setCheckState(Qt::Checked);
 	}
-	if (m_modify_info->checkResultType / 1000 % 10)
+	if (m_modify_info.checkResultType / 1000 % 10)
 	{
 		//散把
 	}
+// 	std::vector<uchar> buff(pbyte, pbyte + m_modify_info.dataLen);
+// 	cv::Mat rltImg = cv::imdecode(buff, cv::IMREAD_COLOR);
+	//QString tempfileName = "D:\\2.jpg";
+	//QFile file(tempfileName);
+	//file.open(QIODevice::WriteOnly);
+	//file.write((char*)m_modify_info.packetDataBuf, m_modify_info.dataLen);
+	//file.close();
+	//FILE* fp;
+	//char fname[50] = "d:\\3.jpg";
+	//fp = fopen(fname, "wb+"); //wb+ 以读写方式打开或建立二进制文件
+	//if (fp == NULL)
+	//{
+	//	return;//建立失败
+	//}
+	//fwrite(m_modify_info.packetDataBuf, sizeof(char), m_modify_info.dataLen, fp);//按字写入buffer，共size字节
+	//fclose(fp);
 
-	const uchar *pSrc = (const uchar*)m_modify_info->packetDataBuf;
-	QImage image(pSrc, m_modify_info->imgWidth, m_modify_info->imgHeight, m_modify_info->imgStep, QImage::Format_RGB888);
+	/*cv::Mat img = cv::Mat::zeros(m_modify_info.imgHeight, m_modify_info.imgWidth, CV_8UC3);
+	memcpy(img.data, m_modify_info.packetDataBuf, m_modify_info.dataLen);*/
+
+	const uchar *pSrc = (const uchar*)m_modify_info.packetDataBuf;
+	QImage image(pSrc, m_modify_info.imgWidth, m_modify_info.imgHeight, m_modify_info.imgStep, QImage::Format_RGB888);
 	m_scene->ShowImage(&image);
 	ui.graphicsView->ZoomFit();
 }
@@ -70,7 +90,7 @@ int BagModify::GetErrTypeInfo()
 	int index = 0;
 	if (ui.checkBox_numErrType->isChecked())
 	{
-		index = index +RESULT_ERRTYPE::NumErr;
+		index = index + RESULT_ERRTYPE::NumErr;
 	}
 	if (ui.checkBox_envelope->isChecked())
 	{
@@ -81,21 +101,34 @@ int BagModify::GetErrTypeInfo()
 
 void BagModify::on_pushButton_OK_clicked()
 {
-	int errType= GetErrTypeInfo();
-	NET_MSG_MODIFY_INFO* send_modify_info=new NET_MSG_MODIFY_INFO;
+	int errType = GetErrTypeInfo();
+	NET_MSG_MODIFY_INFO* send_modify_info = new NET_MSG_MODIFY_INFO;
 	memset(send_modify_info, 0, sizeof(NET_MSG_MODIFY_INFO));
-	send_modify_info->nSerial = m_modify_info->nSerial;
+	send_modify_info->nSerial = m_modify_info.nSerial;
 	send_modify_info->nCheckNum = m_comBoSelIndex;
 	send_modify_info->checkResultType = errType;
 	send_modify_info->modifyFinish = NET_MODIFY_FLAG::MODIFY_OK;
 	if (ui.checkBox_delete->isChecked())
 	{
-		send_modify_info->deleteInfoType = MODIFY_DELETEIMAGE_FLAG;
+		send_modify_info->deleteInfoType = 1;
 	}
-	vector<NET_MSG_MODIFY_INFO*>::iterator iter = GlobalParam::netMsg[m_nclientNo].begin();
-	GlobalParam::netMsg[m_nclientNo].erase(iter);
+	else
+	{
+		send_modify_info->deleteInfoType = 0;
+	}
+	if (!GlobalParam::netMsg[m_nclientNo].empty())
+	{
+		GlobalParam::netMsg[m_nclientNo].pop();
+	}
+	// 	vector<NET_MSG_MODIFY_INFO>::iterator iter = GlobalParam::netMsg[m_nclientNo].begin();
+	// 	GlobalParam::netMsg[m_nclientNo].erase(iter);
 	sendUpdataToMain(send_modify_info, m_nclientNo);
 	delete send_modify_info;
+	close();
+}
+
+void BagModify::on_pushButton_Cancel_clicked()
+{
 	close();
 }
 

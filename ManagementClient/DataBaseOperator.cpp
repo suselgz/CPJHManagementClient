@@ -41,7 +41,7 @@ bool DataBaseOperator::GetDicMachineList(QVector<DIC_MACHINE> &vecDicMachine)
 
 bool DataBaseOperator::GetRefreshInfo(GET_REFRESH_INFO &refresh_info)
 {
-//	memset(&refresh_info, 0, sizeof(GET_REFRESH_INFO));
+
 	bool ret = false;
 	QString sql;
 	sql = QString("select a.BATCH_ID,a.BATCH_CODE,b.AMOUNT,c.PRODUCT_ID,c.PRODUCT_AMOUNT,c.PRODUCT_NAME from wip_batchs a,wip_batch_info b,dic_products c\

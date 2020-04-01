@@ -37,12 +37,14 @@ public:
     QAction *action_setting;
     QWidget *centralWidget;
     QVBoxLayout *verticalLayout_2;
-    QSpacerItem *verticalSpacer_3;
+    QSpacerItem *verticalSpacer;
+    QHBoxLayout *horizontalLayout_3;
+    QLabel *label_logo;
     QHBoxLayout *horizontalLayout_2;
     QLabel *label_appTitle;
     QSpacerItem *horizontalSpacer;
     QPushButton *pushButton_Exit;
-    QSpacerItem *verticalSpacer;
+    QSpacerItem *verticalSpacer_2;
     QHBoxLayout *horizontalLayout;
     QGridLayout *gridLayout;
     ClientInfo *frame_clintInfo00;
@@ -52,7 +54,7 @@ public:
     QVBoxLayout *verticalLayout;
     ClientDetial *frame_clientDetial;
     QFrame *frame_modify;
-    QSpacerItem *verticalSpacer_2;
+    QSpacerItem *verticalSpacer_3;
     QMenuBar *menuBar;
     QStatusBar *statusBar;
 
@@ -78,9 +80,18 @@ public:
         verticalLayout_2->setSpacing(6);
         verticalLayout_2->setContentsMargins(11, 11, 11, 11);
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
-        verticalSpacer_3 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        verticalLayout_2->addItem(verticalSpacer_3);
+        verticalLayout_2->addItem(verticalSpacer);
+
+        horizontalLayout_3 = new QHBoxLayout();
+        horizontalLayout_3->setSpacing(6);
+        horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
+        label_logo = new QLabel(centralWidget);
+        label_logo->setObjectName(QStringLiteral("label_logo"));
+        label_logo->setMinimumSize(QSize(80, 80));
+
+        horizontalLayout_3->addWidget(label_logo);
 
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setSpacing(6);
@@ -102,11 +113,14 @@ public:
         horizontalLayout_2->addWidget(pushButton_Exit);
 
 
-        verticalLayout_2->addLayout(horizontalLayout_2);
+        horizontalLayout_3->addLayout(horizontalLayout_2);
 
-        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        verticalLayout_2->addItem(verticalSpacer);
+        verticalLayout_2->addLayout(horizontalLayout_3);
+
+        verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout_2->addItem(verticalSpacer_2);
 
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setSpacing(6);
@@ -179,9 +193,9 @@ public:
 
         verticalLayout_2->addLayout(horizontalLayout);
 
-        verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        verticalSpacer_3 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        verticalLayout_2->addItem(verticalSpacer_2);
+        verticalLayout_2->addItem(verticalSpacer_3);
 
         ManagementClientClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(ManagementClientClass);
@@ -208,6 +222,7 @@ public:
 #ifndef QT_NO_TOOLTIP
         action_setting->setToolTip(QApplication::translate("ManagementClientClass", "\350\256\276\347\275\256", 0));
 #endif // QT_NO_TOOLTIP
+        label_logo->setText(QString());
         label_appTitle->setText(QApplication::translate("ManagementClientClass", "\346\256\213\346\215\237\344\272\272\346\260\221\345\270\201\351\224\200\346\257\201\344\275\234\344\270\232\345\275\261\345\203\217\347\256\241\347\220\206\347\263\273\347\273\237-\351\233\206\344\270\255\346\216\210\346\235\203\347\253\257", 0));
         pushButton_Exit->setText(QApplication::translate("ManagementClientClass", "\351\200\200\345\207\272", 0));
     } // retranslateUi

@@ -14,7 +14,7 @@ enum NET_MSG_PACKET_TYPE_CONST
 
 struct NET_MSG_PACKET_HEAD
 {
-	int stationID;
+/*	int stationID;
 	int type;
 	int frameIndex;
 	int dataLen;
@@ -25,6 +25,23 @@ struct NET_MSG_PACKET_HEAD
 	union 
 	{
 		BYTE reserved[512 - 4 * sizeof(int) - 4 * sizeof(unsigned)];
+	}PacketReserved;*/
+	int stationID;
+	int type;
+	int frameIndex;
+	int dataLen;
+	unsigned timestamp;
+	unsigned originalTimestamp;
+	unsigned packet_comtype;	//是主控与检测站、主控与显示、显示与检测站 0 1 2
+	unsigned packet_type;		//Packet包类型，类型不同后面PacketReserved起始地址后的数据结构不同
+	int imgWidth;
+	int imgHeight;
+	int imgPitch;
+	int imgSize;
+	int checkResult;
+	union
+	{
+		BYTE reserved[512 - 9 * sizeof(int) - 4 * sizeof(unsigned)];
 	}PacketReserved;
 };
 

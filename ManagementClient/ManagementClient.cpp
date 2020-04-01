@@ -39,8 +39,6 @@ void ManagementClient::TimeOut()
 	QDateTime CurrentTime = QDateTime::currentDateTime();
 
 	QString Timestr = CurrentTime.toString("当前时间：yyyy年-MM月-dd日 hh:mm:ss "); //设置显示的格式
-
-
 	m_currentTimeLabel->setText(Timestr);
 	statusBar()->addPermanentWidget(m_currentTimeLabel, 2);
 }
@@ -52,18 +50,40 @@ void ManagementClient::on_pushButton_Exit_clicked(void)
 
 void ManagementClient::ClientInfoChecked(int nClientNo)
 {
+//	ShellExecute(NULL,"open")
 	if (GlobalParam::netMsg[nClientNo].empty())
 	{
+		QString operation = "open";
+		PCWSTR ope= reinterpret_cast<LPCWSTR>(operation.data());
+		QString strAppName = "C:\\Program Files\\RealVNC\\VNC4\\vncviewer.exe";
+		PCWSTR appName = reinterpret_cast<LPCWSTR>(strAppName.data());
+		QString strPingName = "C:\\Windows\\System32\\ping.exe";
+		PCWSTR pingName = reinterpret_cast<LPCWSTR>(strPingName.data());
+
+		switch (nClientNo)
+		{
+		case NET_CONNECT_MACHINE_CODE::MACHINE1_CODE:
+			ShellExecute(NULL, ope, appName, reinterpret_cast<LPCWSTR>(GlobalParam::dbSetting.macine1IP.data()) , NULL, SW_SHOW);
+			break;
+		case NET_CONNECT_MACHINE_CODE::MACHINE2_CODE:
+			ShellExecute(NULL, ope, appName, reinterpret_cast<LPCWSTR>(GlobalParam::dbSetting.macine2IP.data()), NULL, SW_SHOW);
+			break;
+		case NET_CONNECT_MACHINE_CODE::MACHINE3_CODE:
+			ShellExecute(NULL, ope, appName, reinterpret_cast<LPCWSTR>(GlobalParam::dbSetting.macine3IP.data()), NULL, SW_SHOW);
+			break;
+		}
 		return;  //队列无数据则返回。
 	}
-	int x = ui.frame_modify->x();
-	int y = ui.frame_modify->y();
+	int frame_x = ui.frame_modify->x();
+	int frame_y = ui.frame_modify->y();
+	int frame_width = ui.frame_modify->width();
+	int frame_height = ui.frame_modify->height();
 	BagModify* bagModify= new BagModify(nClientNo);
-	bagModify->resize(800,400);
+	bagModify->resize(frame_width, frame_height);
 	bagModify->setWindowModality(Qt::ApplicationModal);
 	connect(bagModify, SIGNAL(sendUpdataToMain(NET_MSG_MODIFY_INFO*,int)), this, SLOT(RevModifyWidgetInfo(NET_MSG_MODIFY_INFO*,int)));
 	bagModify->show();
-	bagModify->move(x+80, y+40);
+	bagModify->move(frame_x, frame_y);
 }
 
 void ManagementClient::RevNetConnectStatus(NET_CONNECT_STATUS net_status)
@@ -157,6 +177,15 @@ void ManagementClient::SetClientInfo(CLIENT_INFO client_info, int machineCode)
 	default:
 		break;
 	}
+	if (GlobalParam::netMsg[machineCode].empty())
+	{
+		m_pClientInfo[machineCode]->SetLight(false);
+	}
+	else
+	{
+		m_pClientInfo[machineCode]->SetLight(true);
+	}
+
 }
 
 void ManagementClient::InitQssInfo(void)
@@ -185,12 +214,10 @@ void ManagementClient::SetClientInfoEnabled(bool bEnabled /*= false*/)
 
 void ManagementClient::Test()
 {
-	//test
 	NET_MSG_MODIFY_INFO* modify_info = new NET_MSG_MODIFY_INFO;
 	cv::Mat srcImg = cv::imread("1.jpg");
 	cv::cvtColor(srcImg, srcImg, cv::COLOR_RGB2BGR);
-	modify_info->nSerial = 100000;
-	int a = srcImg.step;
+	modify_info->nSerial = 0;
 	modify_info->dataLen = srcImg.cols*srcImg.rows*srcImg.channels();
 	modify_info->imgWidth = srcImg.cols;
 	modify_info->imgHeight = srcImg.rows;
@@ -201,11 +228,12 @@ void ManagementClient::Test()
 	modify_info->packetDataBuf = new BYTE[modify_info->dataLen];
 	memcpy(modify_info->packetDataBuf, srcImg.data, modify_info->dataLen);
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 1; i++)
 	{
-		GlobalParam::netMsg[0].push_back(modify_info);
-		GlobalParam::netMsg[1].push_back(modify_info);
-		GlobalParam::netMsg[2].push_back(modify_info);
+		modify_info->nSerial = i;
+		GlobalParam::netMsg[0].push(*modify_info);
+		GlobalParam::netMsg[1].push(*modify_info);
+		GlobalParam::netMsg[2].push(*modify_info);
 
 		GlobalParam::clintInfo[0].nTotalRecive++;
 		GlobalParam::clintInfo[0].nTotalRetrieve++;
@@ -221,7 +249,6 @@ void ManagementClient::Test()
 	m_pClientInfo[0]->SetLight(true);
 	m_pClientInfo[1]->SetLight(true);
 	m_pClientInfo[2]->SetLight(true);
-	//test
 }
 
 void ManagementClient::WriteMsgList(QString msg)

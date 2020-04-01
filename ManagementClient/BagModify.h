@@ -20,7 +20,7 @@ private:
 	QDispScene *m_scene;
 	int m_nclientNo;
 	int m_comBoSelIndex;
-	NET_MSG_MODIFY_INFO* m_modify_info;
+	NET_MSG_MODIFY_INFO m_modify_info;
 	void InitDispScene();
 	void InitModifyInfo(int nClientNo);
 	int GetErrTypeInfo();
@@ -29,6 +29,7 @@ signals:
 public slots:
 	void comboBoxSel();
 	void on_pushButton_OK_clicked();
+	void on_pushButton_Cancel_clicked();
 };
 
 #endif // BAGMODIFY_H

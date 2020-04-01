@@ -14,6 +14,9 @@ typedef struct DB_SETTING_TAG
 	QString userName;
 	QString userPwd;
 	QString serverPort;
+	QString macine1IP;
+	QString macine2IP;
+	QString macine3IP;
 }DB_SETTING;
 typedef struct CLIENT_INFO_TAG
 {
@@ -29,7 +32,6 @@ typedef struct CLIENT_INFO_TAG
 #define NETPACKET_TYPE_TOVS_MACHINE2		        0x1C		//机器2发送数据
 #define NETPACKET_TYPE_TOVS_MACHINE3		        0x1D		//机器3发送数据
 
-#define MODIFY_DELETEIMAGE_FLAG 9
 struct NET_MSG_MODIFY_INFO
 {
 	INT64	nSerial;

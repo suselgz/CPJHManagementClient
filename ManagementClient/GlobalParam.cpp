@@ -4,7 +4,8 @@ DAL GlobalParam::dal;
 DB_SETTING GlobalParam::dbSetting;
 CLIENT_INFO GlobalParam::clintInfo[CLIENT_NUM_INFO];
 QString GlobalParam::orgPath;
-vector<NET_MSG_MODIFY_INFO*> GlobalParam::netMsg[CLIENT_NUM_INFO];
+queue<NET_MSG_MODIFY_INFO> GlobalParam::netMsg[CLIENT_NUM_INFO];
+queue<int> GlobalParam::Test[CLIENT_NUM_INFO];
 GlobalParam::GlobalParam(QObject *parent)
 	: QObject(parent)
 {
@@ -56,6 +57,9 @@ void GlobalParam::GetSetting(void)
 	dbSetting.userName = pSettings->value("/db/userName").toString();
 	dbSetting.userPwd = pSettings->value("/db/userPwd").toString();
 	dbSetting.serverPort = pSettings->value("/db/serverPort").toString();
+	dbSetting.macine1IP = pSettings->value("/db/macine1IP").toString();
+	dbSetting.macine2IP = pSettings->value("/db/macine2IP").toString();
+	dbSetting.macine3IP = pSettings->value("/db/macine3IP").toString();
 	delete pSettings;
 	pSettings = nullptr;
 }

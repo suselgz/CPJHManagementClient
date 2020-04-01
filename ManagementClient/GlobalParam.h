@@ -24,5 +24,6 @@ public:
 	static DAL dal;
 	static DB_SETTING dbSetting;
 	static CLIENT_INFO clintInfo[CLIENT_NUM_INFO];
-	static vector<NET_MSG_MODIFY_INFO*> netMsg[CLIENT_NUM_INFO];
+	static queue<NET_MSG_MODIFY_INFO> netMsg[CLIENT_NUM_INFO];
+	static queue<int> Test[CLIENT_NUM_INFO];
 };
