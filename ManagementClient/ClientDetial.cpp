@@ -61,17 +61,35 @@ void ClientDetial::SetpreAmount(QString preAmoun)
 
 void ClientDetial::SetdestroyNum(int destroyNum)
 {
-	ui.label_destroyNum->setText(QString::number(destroyNum));
+	QString num = QString::number(destroyNum);
+	size_t len = num.length();
+	for (int index = (int)len - 3; index > 0; index -= 3)
+	{
+		num.insert(index, ",");
+	}
+	ui.label_destroyNum->setText(num);
 }
 
 void ClientDetial::SetdestroyBox(int destroyBox)
 {
-	ui.label_destroyBox->setText(QString::number(destroyBox));
+	QString box = QString::number(destroyBox);
+	size_t len = box.length();
+	for (int index = (int)len - 3; index > 0; index -= 3)
+	{
+		box.insert(index, ",");
+	}
+	ui.label_destroyBox->setText(box);
 }
 
 void ClientDetial::SetdestroyBag(int destroyBag)
 {
-	ui.label_destroyBag->setText(QString::number(destroyBag));
+	QString Bag = QString::number(destroyBag);
+	size_t len = Bag.length();
+	for (int index = (int)len - 3; index > 0; index -= 3)
+	{
+		Bag.insert(index, ",");
+	}
+	ui.label_destroyBag->setText(Bag);
 }
 
 void ClientDetial::SetTableReciveDetial(QString operatorName)

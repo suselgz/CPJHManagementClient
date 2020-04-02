@@ -59,25 +59,6 @@ void BagModify::InitModifyInfo(int nClientNo)
 	{
 		//散把
 	}
-// 	std::vector<uchar> buff(pbyte, pbyte + m_modify_info.dataLen);
-// 	cv::Mat rltImg = cv::imdecode(buff, cv::IMREAD_COLOR);
-	//QString tempfileName = "D:\\2.jpg";
-	//QFile file(tempfileName);
-	//file.open(QIODevice::WriteOnly);
-	//file.write((char*)m_modify_info.packetDataBuf, m_modify_info.dataLen);
-	//file.close();
-	//FILE* fp;
-	//char fname[50] = "d:\\3.jpg";
-	//fp = fopen(fname, "wb+"); //wb+ 以读写方式打开或建立二进制文件
-	//if (fp == NULL)
-	//{
-	//	return;//建立失败
-	//}
-	//fwrite(m_modify_info.packetDataBuf, sizeof(char), m_modify_info.dataLen, fp);//按字写入buffer，共size字节
-	//fclose(fp);
-
-	/*cv::Mat img = cv::Mat::zeros(m_modify_info.imgHeight, m_modify_info.imgWidth, CV_8UC3);
-	memcpy(img.data, m_modify_info.packetDataBuf, m_modify_info.dataLen);*/
 
 	const uchar *pSrc = (const uchar*)m_modify_info.packetDataBuf;
 	QImage image(pSrc, m_modify_info.imgWidth, m_modify_info.imgHeight, m_modify_info.imgStep, QImage::Format_RGB888);

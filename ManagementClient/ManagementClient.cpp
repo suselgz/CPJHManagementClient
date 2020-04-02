@@ -8,11 +8,11 @@ ManagementClient::ManagementClient(QWidget *parent)
 	InitStatusBar();
 	InitQssInfo();
 	SetClientInfoEnabled(true);
-	Test();
+//	Test();
 	m_currentTimeLabel = new QLabel;
 	m_timer = new QTimer(this);
 	connect(m_timer, SIGNAL(timeout()), this, SLOT(TimeOut()));
-	m_timer->start(1000);
+//	m_timer->start(1000);
 	m_nOperatorCount = -1;
 	m_bRefresh = false;
 	m_refreshThread = new RefreshThread(this);
@@ -50,7 +50,6 @@ void ManagementClient::on_pushButton_Exit_clicked(void)
 
 void ManagementClient::ClientInfoChecked(int nClientNo)
 {
-//	ShellExecute(NULL,"open")
 	if (GlobalParam::netMsg[nClientNo].empty())
 	{
 		QString operation = "open";
@@ -120,23 +119,22 @@ void ManagementClient::RevModifyWidgetInfo(NET_MSG_MODIFY_INFO* modify_info, int
 void ManagementClient::InitStatusBar(void)
 {
 	QLabel *per1 = new QLabel("研制单位：", this);
-
 	QLabel *per2 = new QLabel("深圳市中钞科信金融科技有限公司", this);
-
-//	QLabel *per3 = new QLabel("", this);
-
 	statusBar()->addPermanentWidget(per1);
-
 	statusBar()->addPermanentWidget(per2, 2);
-
-//	statusBar()->insertPermanentWidget(2, per3, 3);
 }
 
 void ManagementClient::RevClientAndDetialInfo(GET_REFRESH_INFO refresh_info)
 {
 	m_ClientDetial->SetpatchCode(refresh_info.patchCode);
 	m_ClientDetial->SetproductType(refresh_info.productName);
-	m_ClientDetial->SetpreAmount(QString::number(refresh_info.preSetAmount));
+	QString preSetAmount = QString::number(refresh_info.preSetAmount);
+	size_t len = preSetAmount.length();
+	 for (int index = (int)len - 3; index > 0; index -= 3)
+	 {
+		 preSetAmount.insert(index, ",");
+	 }
+	m_ClientDetial->SetpreAmount(preSetAmount);
 	m_ClientDetial->SetdestroyBox(refresh_info.destroyBoxNum);
 	m_ClientDetial->SetdestroyBag(refresh_info.destroyBagNum);
 	m_ClientDetial->SetdestroyNum(refresh_info.destroyNum);
@@ -194,7 +192,10 @@ void ManagementClient::InitQssInfo(void)
 	m_pClientInfo[0] = ui.frame_clintInfo00;
 	m_pClientInfo[1] = ui.frame_clintInfo01;
 	m_pClientInfo[2] = ui.frame_clintInfo02;
-
+	ui.frame_clintInfo00->setStyleSheet("background-color: rgb(200,240,210);");
+	ui.frame_clintInfo01->setStyleSheet("background-color: rgb(200,240,210);");
+	ui.frame_clintInfo02->setStyleSheet("background-color: rgb(200,240,210);");
+//	ui.frame_clintInfo03->setStyleSheet("background-color: rgb(200,240,210);");
 	m_skin = zxqsSkinThemeInstance();
 	if (!m_skin->LoadSkin())
 	{
@@ -225,8 +226,6 @@ void ManagementClient::Test()
 	modify_info->nCheckNum = 9;
 	modify_info->checkResultType = 100;
 	modify_info->modifyFinish = 0;
-	modify_info->packetDataBuf = new BYTE[modify_info->dataLen];
-	memcpy(modify_info->packetDataBuf, srcImg.data, modify_info->dataLen);
 
 	for (int i = 0; i < 1; i++)
 	{

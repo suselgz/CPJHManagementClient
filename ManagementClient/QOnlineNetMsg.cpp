@@ -122,26 +122,22 @@ void QOnlineNetMsg::OnServerRecvStationMsgData(void * userData, int stationID, N
 		}
 		NET_MSG_MODIFY_INFO * pModifyInfo;
 		pModifyInfo = (NET_MSG_MODIFY_INFO *)&msg->PacketReserved;
-
-
-		QString tempfileName = "D:\\2.jpg";
-		QFile file(tempfileName);
-		file.open(QIODevice::WriteOnly);
-		file.write((char*)packetData, pModifyInfo->dataLen);
-		file.close();
-		FILE* fp;
-		char fname[50] = "D:\\3.jpg";
-		fp = fopen(fname, "wb+"); //wb+ 以读写方式打开或建立二进制文件
-		if (fp == NULL)
-		{
-			return;//建立失败
-		}
-		fwrite(pModifyInfo->packetDataBuf, sizeof(char), pModifyInfo->dataLen, fp);
-		fclose(fp);
+		pModifyInfo->packetDataBuf = packetData;
+		//QString tempfileName = "D:\\2.jpg";
+		//QFile file(tempfileName);
+		//file.open(QIODevice::WriteOnly);
+		//file.write((char*)packetData, pModifyInfo->dataLen);
+		//file.close();
+		//FILE* fp;
+		//char fname[50] = "D:\\3.jpg";
+		//fp = fopen(fname, "wb+"); //wb+ 以读写方式打开或建立二进制文件
+		//if (fp == NULL)
+		//{
+		//	return;//建立失败
+		//}
+		//fwrite(packetData, sizeof(char), pModifyInfo->dataLen, fp);
+		//fclose(fp);
 		
-		//cv::Mat img = cv::Mat::zeros(pModifyInfo->imgHeight, pModifyInfo->imgWidth, CV_8UC3);
-		//memcpy(img.data, pModifyInfo->packetDataBuf, pModifyInfo->dataLen);
-
 		if (pModifyInfo->modifyFinish == NET_MODIFY_FLAG::MODIFY_NO)
 		{
 			GlobalParam::netMsg[machineCode].push(*pModifyInfo);
