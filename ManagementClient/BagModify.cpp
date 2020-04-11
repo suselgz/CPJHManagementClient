@@ -6,9 +6,11 @@ BagModify::BagModify(int nClientNo)
 	ui.setupUi(this);
 	qRegisterMetaType<NET_MSG_MODIFY_INFO*>("NET_MSG_MODIFY_INFO*");
 	m_nclientNo = nClientNo;
+	m_timer = new QTimer(this);
+	connect(m_timer, SIGNAL(timeout()), this, SLOT(TimeOut()));
 	InitDispScene();
 	this->setWindowFlags(Qt::Widget | Qt::WindowStaysOnTopHint);
-	InitModifyInfo(nClientNo);
+	InitModifyInfo(m_nclientNo);
 	this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
 }
 
@@ -86,8 +88,9 @@ void BagModify::on_pushButton_OK_clicked()
 	NET_MSG_MODIFY_INFO* send_modify_info = new NET_MSG_MODIFY_INFO;
 	memset(send_modify_info, 0, sizeof(NET_MSG_MODIFY_INFO));
 	send_modify_info->nSerial = m_modify_info.nSerial;
-	send_modify_info->nCheckNum = m_comBoSelIndex;
+	send_modify_info->nCheckNum = m_comBoSelIndex;//test
 	send_modify_info->checkResultType = errType;
+	send_modify_info->operatorid = 5; //test
 	send_modify_info->modifyFinish = NET_MODIFY_FLAG::MODIFY_OK;
 	if (ui.checkBox_delete->isChecked())
 	{
@@ -101,16 +104,19 @@ void BagModify::on_pushButton_OK_clicked()
 	{
 		GlobalParam::netMsg[m_nclientNo].pop();
 	}
-	// 	vector<NET_MSG_MODIFY_INFO>::iterator iter = GlobalParam::netMsg[m_nclientNo].begin();
-	// 	GlobalParam::netMsg[m_nclientNo].erase(iter);
-	sendUpdataToMain(send_modify_info, m_nclientNo);
+	emit sendUpdataToMain(send_modify_info, m_nclientNo);
 	delete send_modify_info;
-	close();
+	this->close();
 }
 
 void BagModify::on_pushButton_Cancel_clicked()
 {
-	close();
+	this->close();
+}
+
+void BagModify::TimeOut()
+{
+	m_timer->stop();
 }
 
 void BagModify::comboBoxSel()

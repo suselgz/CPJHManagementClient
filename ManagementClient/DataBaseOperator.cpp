@@ -44,8 +44,10 @@ bool DataBaseOperator::GetRefreshInfo(GET_REFRESH_INFO &refresh_info)
 
 	bool ret = false;
 	QString sql;
-	sql = QString("select a.BATCH_ID,a.BATCH_CODE,b.AMOUNT,c.PRODUCT_ID,c.PRODUCT_AMOUNT,c.PRODUCT_NAME from wip_batchs a,wip_batch_info b,dic_products c\
-                           where a.BATCH_ID=b.BATCH_ID and b.batch_info_id = (select min(a.batch_info_id) from wip_batch_info a where a.finished_flag != 1) and b.PRODUCT_ID=c.PRODUCT_ID");
+	sql = QString("select a.BATCH_ID,a.BATCH_CODE,b.AMOUNT,c.PRODUCT_ID,c.PRODUCT_AMOUNT,c.PRODUCT_NAME from\
+                   wip_batchs a,wip_batch_info b,dic_products c where a.BATCH_ID=b.BATCH_ID and b.batch_info_id =\
+                  (select min(a.batch_info_id) from wip_batch_info a , wip_batchs b where a.BATCH_ID=b.BATCH_ID\
+                  and  b.check_flag = 1) and b.PRODUCT_ID=c.PRODUCT_ID");
 	QSqlQuery query1(sql, *m_pDb);
 	while (query1.next())
 	{

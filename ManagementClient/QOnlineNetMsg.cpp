@@ -198,6 +198,7 @@ void QOnlineNetMsg::FreeNetwork()
 bool QOnlineNetMsg::SendMsgToMachine(NET_MSG_MODIFY_INFO *send_info, int nMachineID)
 {
 	NET_MSG_PACKET_HEAD sendMsg;
+	memset(&sendMsg,0, sizeof(NET_MSG_PACKET_HEAD));
 	sendMsg.type = 8;
 	sendMsg.timestamp = (int)GetCurTimeMS();
 	switch (nMachineID)
@@ -223,6 +224,10 @@ bool QOnlineNetMsg::SendMsgToMachine(NET_MSG_MODIFY_INFO *send_info, int nMachin
 	pInfoToPm->checkResultType = send_info->checkResultType;
 	pInfoToPm->modifyFinish = send_info->modifyFinish;
 	pInfoToPm->deleteInfoType = send_info->deleteInfoType;
+	pInfoToPm->operatorid = send_info->operatorid;
+
+	qDebug() << "Send" << QString::number(m_nStationID[nMachineID]) << endl;
 	m_pNetServer->SendMsgToClient(m_nStationID[nMachineID], &sendMsg, NULL, 0);
+	qDebug() << "Send end" << endl;
 	return true;
 }

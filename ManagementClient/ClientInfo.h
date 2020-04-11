@@ -11,6 +11,8 @@ public:
 	ClientInfo(QWidget *parent = Q_NULLPTR);
 	~ClientInfo();
 	virtual void mousePressEvent(QMouseEvent *event);
+	virtual void mouseDoubleClickEvent(QMouseEvent *event);
+	
 	int  m_nClientNo;
 	
 	void SetLight(bool nRct);
@@ -27,4 +29,5 @@ private:
 	bool m_bSel;
 signals:
 	void ClientInfoChecked(int nClientNo);
+	void ClientInfoDoubleClick(int nClientNo);
 };

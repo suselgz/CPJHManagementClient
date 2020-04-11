@@ -50,10 +50,15 @@ void ManagementClient::on_pushButton_Exit_clicked(void)
 
 void ManagementClient::ClientInfoChecked(int nClientNo)
 {
+	
+}
+
+void ManagementClient::ClientInfoDoubleClick(int nClientNo)
+{
 	if (GlobalParam::netMsg[nClientNo].empty())
 	{
 		QString operation = "open";
-		PCWSTR ope= reinterpret_cast<LPCWSTR>(operation.data());
+		PCWSTR ope = reinterpret_cast<LPCWSTR>(operation.data());
 		QString strAppName = "C:\\Program Files\\RealVNC\\VNC4\\vncviewer.exe";
 		PCWSTR appName = reinterpret_cast<LPCWSTR>(strAppName.data());
 		QString strPingName = "C:\\Windows\\System32\\ping.exe";
@@ -62,7 +67,7 @@ void ManagementClient::ClientInfoChecked(int nClientNo)
 		switch (nClientNo)
 		{
 		case NET_CONNECT_MACHINE_CODE::MACHINE1_CODE:
-			ShellExecute(NULL, ope, appName, reinterpret_cast<LPCWSTR>(GlobalParam::dbSetting.macine1IP.data()) , NULL, SW_SHOW);
+			ShellExecute(NULL, ope, appName, reinterpret_cast<LPCWSTR>(GlobalParam::dbSetting.macine1IP.data()), NULL, SW_SHOW);
 			break;
 		case NET_CONNECT_MACHINE_CODE::MACHINE2_CODE:
 			ShellExecute(NULL, ope, appName, reinterpret_cast<LPCWSTR>(GlobalParam::dbSetting.macine2IP.data()), NULL, SW_SHOW);
@@ -77,12 +82,13 @@ void ManagementClient::ClientInfoChecked(int nClientNo)
 	int frame_y = ui.frame_modify->y();
 	int frame_width = ui.frame_modify->width();
 	int frame_height = ui.frame_modify->height();
-	BagModify* bagModify= new BagModify(nClientNo);
+	BagModify* bagModify = new BagModify(nClientNo);
+	connect(bagModify, SIGNAL(sendUpdataToMain(NET_MSG_MODIFY_INFO*, int)), this, SLOT(RevModifyWidgetInfo(NET_MSG_MODIFY_INFO*, int)));
 	bagModify->resize(frame_width, frame_height);
 	bagModify->setWindowModality(Qt::ApplicationModal);
-	connect(bagModify, SIGNAL(sendUpdataToMain(NET_MSG_MODIFY_INFO*,int)), this, SLOT(RevModifyWidgetInfo(NET_MSG_MODIFY_INFO*,int)));
 	bagModify->show();
 	bagModify->move(frame_x, frame_y);
+
 }
 
 void ManagementClient::RevNetConnectStatus(NET_CONNECT_STATUS net_status)
@@ -148,6 +154,7 @@ void ManagementClient::RevClientAndDetialInfo(GET_REFRESH_INFO refresh_info)
 		{
 			m_pClientInfo[i]->m_nClientNo = i;
 			connect(m_pClientInfo[i], SIGNAL(ClientInfoChecked(int)), this, SLOT(ClientInfoChecked(int)));
+			connect(m_pClientInfo[i], SIGNAL(ClientInfoDoubleClick(int)), this, SLOT(ClientInfoDoubleClick(int)));
 		}
 		GlobalParam::clintInfo[i].nMachineId = refresh_info.operator_info[i].machineID;
 		GlobalParam::clintInfo[i].machineName = refresh_info.operator_info[i].machineName;
@@ -226,8 +233,10 @@ void ManagementClient::Test()
 	modify_info->nCheckNum = 9;
 	modify_info->checkResultType = 100;
 	modify_info->modifyFinish = 0;
+	modify_info->packetDataBuf = new BYTE[modify_info->dataLen];
+	memcpy(modify_info->packetDataBuf, srcImg.data, modify_info->dataLen);
 
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 9; i++)
 	{
 		modify_info->nSerial = i;
 		GlobalParam::netMsg[0].push(*modify_info);

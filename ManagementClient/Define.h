@@ -43,6 +43,7 @@ struct NET_MSG_MODIFY_INFO
 	int     checkResultType;
 	int     modifyFinish;  /*0未处理，1已处理*/
 	int     deleteInfoType;
+	int     operatorid;
 	BYTE*   packetDataBuf;
 	BYTE	reserved[256 - sizeof(int) * 2 - sizeof(INT64)];
 	BOOL operator != (const NET_MSG_MODIFY_INFO & cfg)
@@ -56,6 +57,7 @@ struct NET_MSG_MODIFY_INFO
 		if (checkResultType != cfg.checkResultType)   return TRUE;
 		if (modifyFinish != cfg.modifyFinish)   return TRUE;
 		if (deleteInfoType != cfg.deleteInfoType)   return TRUE;
+		if (operatorid != cfg.operatorid)   return TRUE;
 		return FALSE;
 	}
 };

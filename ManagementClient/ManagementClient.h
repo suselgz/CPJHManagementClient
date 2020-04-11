@@ -10,6 +10,7 @@
 #include "ClientDetial.h"
 #include <QTimer>
 #include "RefreshThread.h"
+#include "QDebug.h"
 class ManagementClient : public QMainWindow
 {
 	Q_OBJECT
@@ -27,7 +28,6 @@ private:
 	bool m_bRefresh;
 	DAL m_dal;
 	zxqsSkinTheme* m_skin;
-	BagModify* m_bagModify;
 	QOnlineNetMsg* m_OnlineNetMsg;
 	ClientDetial* m_ClientDetial;
 	RefreshThread* m_refreshThread;
@@ -41,6 +41,7 @@ private slots:
 	void RevClientAndDetialInfo(GET_REFRESH_INFO refresh_info);
 	void on_pushButton_Exit_clicked(void);
 	void ClientInfoChecked(int nClientNo);
+	void ClientInfoDoubleClick(int nClientNo);
 	void RevNetConnectStatus(NET_CONNECT_STATUS net_status);
 	void SetClientInfo(CLIENT_INFO client_info, int machineCode);
 	void RevModifyWidgetInfo(NET_MSG_MODIFY_INFO* modify_info,int nClientNo);

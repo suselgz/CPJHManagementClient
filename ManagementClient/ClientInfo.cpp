@@ -22,6 +22,11 @@ void ClientInfo::mousePressEvent(QMouseEvent *event)
 	emit ClientInfoChecked(m_nClientNo);
 }
 
+void ClientInfo::mouseDoubleClickEvent(QMouseEvent *event)
+{
+	emit ClientInfoDoubleClick(m_nClientNo);
+}
+
 void ClientInfo::SetLight(bool nRct)
 {
 	if (nRct)
@@ -51,8 +56,8 @@ void ClientInfo::SetChecked(bool bChecked)
 
 void ClientInfo::SetClientInfo(CLIENT_INFO clientInfo)
 {
-//	ui.label_machineName->setText(clientInfo.machineName);
-//	ui.label_operatorName->setText(clientInfo.operatorName);
+	ui.label_machineName->setText(clientInfo.machineName);
+	ui.label_operatorName->setText(clientInfo.operatorName);
 	ui.label_totalRecive->setText(QString::number(clientInfo.nTotalRecive));
 	ui.label_totalRetrieve->setText(QString::number(clientInfo.nTotalRetrieve));
 }
